@@ -1,0 +1,13 @@
+.iframe-div {
+    position: relative;
+    overflow: hidden;
+}
+.iframe-fit {
+    top: 0; 
+    left: 0;
+    width: 100%;
+    min-height: calc(100% - (72px));
+    height: -moz-calc(100% - (72px));
+    height: -webkit-calc(100% - (72px));
+    height: calc(100% - (72px));
+}

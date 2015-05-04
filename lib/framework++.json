@@ -1,0 +1,43 @@
+{
+    "name": "top",
+    "env" : {
+        "publicHostname" : "process.env.publicHostname||root-launcher.vcap.me"
+    },
+    "components": [
+        {
+            "name": "log",
+            "env" : {
+                "logLevel" : "DEBUG"
+            }
+        },
+        {
+            "name": "security",
+            "module": "caf_security#plug",
+            "description": "Authenticates requests\n Properties: <keysDir> Directory with key material, defaults to colocated with ca_methods.js (i.e., <app_root>/lib). \n <trustedPubKeyFile> Trusted public key to verify signed tokens. \n <privateKeyFile> Optional private key to sign tokens. \n <pubKeyFile> Optional public key for signing key. \n <appPublisher> Name of the app publisher.\n <appLocalName> Local name app given by the app publisher.\n <allowNobodyUser> Enable the user 'nobody' to bypass authentication",
+            "env" : {
+                "keysDir": null,
+                "trustedPubKeyFile" : "rsa_pub.pem",
+                "privateKeyFile": null,
+                "publicKeyFile" : null,
+                "appPublisher" : "root",
+                "appLocalName" : "launcher",
+                "allowNobodyUser" : false,
+                "accountsURL": "http://root-accounts.vcap.me"
+            }
+        },
+        {
+            "name": "cp"
+        },
+        {
+            "name" : "react",
+            "module": "caf_react#plug",
+            "description": "React.js background rendering",
+            "env": {
+                "appFileName" : "../public/index.html",
+                "separator" : "<section id=\"content\">",
+                "cacheService" : "cp",
+                "expiresInSec" : 60
+            }
+        }
+    ]
+}
