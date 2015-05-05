@@ -11,3 +11,6 @@
     height: -webkit-calc(100% - (72px));
     height: calc(100% - (72px));
 }
+
+.modal-content {overflow: visible !important; }
+

@@ -1,7 +1,7 @@
 {
   "name": "caf_launcher",
   "description": "Cloud Assistants application launcher.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
       "caf_react" :"^0.2.0",

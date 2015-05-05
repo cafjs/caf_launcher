@@ -59,7 +59,8 @@ var MyApp = {
                          current: this.state.current
                      }),
                   cE(AddModal, {
-                         current: this.state.current
+                         current: this.state.current,
+                         login: this.state.login
                      }),
                   cE(rB.Navbar, {
                          brand: navBrand,

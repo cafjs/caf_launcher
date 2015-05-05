@@ -4,6 +4,8 @@ var cE = React.createElement;
 var AppActions = require('../actions/AppActions');
 var json_rpc = require('caf_transport').json_rpc;
 
+var APPS = ['root-helloworld'];
+
 var HelloModal = {
     mixins: [rB.OverlayMixin],
 
@@ -44,10 +46,16 @@ var HelloModal = {
         this.handleModal(false);
     },
 
-    caOwnerChange: function(ev) {
+    submit: function(ev) {
         if (ev.key === 'Enter') {
-            this.doLogin(ev);
+            this.doAdd(ev);
         }
+    },
+
+    onSelect: function(selectedKey) {
+        var split = json_rpc.splitName(selectedKey);
+        document.getElementById('appPublisher').value = split[0];
+        document.getElementById('appLocalName').value = split[1];
     },
 
   // This is called by the `OverlayMixin` when this component
@@ -74,15 +82,30 @@ var HelloModal = {
                          cE(rB.Input, {
                                 type: 'text',
                                 id: 'caOwner',
+                                defaultValue: this.props.login.caOwner,
                                 placeholder: 'Enter account name'
                             }),
                          cE(rB.Input, {
                                 type: 'text',
                                 id: 'caLocalName',
-                                placeholder: 'Enter CA name'
+                                placeholder: 'Enter CA name',
+                                onKeyDown: this.submit
                             })
                         ),
                       cE("div", {className: "modal-footer"},
+                         cE(rB.DropdownButton, {
+                                onSelect: this.onSelect,
+                                title: 'Find'
+                            },
+                            APPS.map(function(x, i) {
+                                    return cE(rB.MenuItem, {
+                                                key:i*232131,
+                                                eventKey: x,
+                                                href: null,
+                                                target: x
+                                              }, x);
+                                     })
+                           ),
                          cE(rB.Button, {onClick: this.doAdd}, "Add")
                         )
                      );
