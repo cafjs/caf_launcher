@@ -8,24 +8,28 @@ var querystring =  require('querystring');
 
 var cE = React.createElement;
 
-var extractLoginFromURL = function() {
+var extractInfoFromURL = function() {
+    var response = {};
     var url = urlParser.parse(window.location.href);
     if (url.hash) {
         var hashParsed = querystring.parse(url.hash.slice(1));
         if (hashParsed.from && (hashParsed.from === hashParsed.ca)) {
-            return json_rpc.splitName(hashParsed.from);
-        } else {
-            return null;
+            response.login =  json_rpc.splitName(hashParsed.from);
         }
-    } else {
-        return null;
+        if (hashParsed.disableCache) {
+            response.disableCache = true;
+        }
     }
+    return response;
 };
 
 exports.main = function(data) {
-    var login = extractLoginFromURL();
-    if (login) {
-        AppActions.login(login[0], login[1]);
+    var info = extractInfoFromURL();
+    if (info.login) {
+        AppActions.login(info.login[0], info.login[1]);
+    }
+    if (info.disableCache) {
+        AppActions.disableCache(true);
     }
     React.render(cE(MyApp, null), document.getElementById('content'));
     return null;

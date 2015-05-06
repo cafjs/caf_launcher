@@ -13,6 +13,8 @@ var newAppStore = function() {
 
     var server = new EventEmitter2();
 
+    var invCacheCounter = 0;
+
     var state = {
         apps :{},
         current: DEFAULT_CURRENT,
@@ -61,15 +63,22 @@ var newAppStore = function() {
                     .toString('base64');
                 state.cacheKeys[state.current.pending] = cacheKey;
             }
-            var url = cli.patchURL(window.location.href, {
-                                       appPublisher: app[0],
-                                       appLocalName: app[1],
-                                       caOwner: ca[0],
-                                       caLocalName: ca[1],
-                                       token: state.apps[state.current
-                                                             .pending],
-                                       cacheKey: cacheKey
-                                   });
+            var options = {
+                appPublisher: app[0],
+                appLocalName: app[1],
+                caOwner: ca[0],
+                caLocalName: ca[1],
+                token: state.apps[state.current.pending],
+                cacheKey: cacheKey
+            };
+
+            // mostly for demo
+            if (state.disableCache) {
+                options.cacheKey = invCacheCounter;
+                invCacheCounter = invCacheCounter + 1;
+            }
+
+            var url = cli.patchURL(window.location.href, options);
             state.current = {url: url, target: state.current.pending};
         }
     };

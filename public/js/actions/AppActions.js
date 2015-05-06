@@ -132,6 +132,10 @@ AppActions.login = function(caOwner, caLocalName) {
     }
 };
 
+AppActions.disableCache = function(value) {
+    updateF({disableCache: value});
+};
+
 AppActions.setCurrent = function(newCurrent) {
     newCurrent = (newCurrent === null ? {url: 'blank.html', target: null} :
                   newCurrent);
