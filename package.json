@@ -1,11 +1,12 @@
 {
   "name": "caf_launcher",
   "description": "Cloud Assistants application launcher.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
       "caf_react" :"^0.2.0",
       "caf_core": "^0.2.0",
+      "caf_security":"^0.2.0",
       "caf_cli": "^0.2.0",
       "caf_transport": "^0.2.0",
       "react" : "^0.13.0",
@@ -20,6 +21,7 @@
         "uglify-js" : "^2.4.0"
     },
     "scripts": {
+       "start" : "node ./index.js",
         "test": "node ./node_modules/.bin/nodeunit",
         "build-js" : "browserify  -d public/js/main.js -o public/js/build.js",
         "build-min-js" : "export NODE_ENV=production; browserify public/js/main.js | uglifyjs > public/js/build.min.js",

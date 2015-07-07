@@ -1,7 +1,7 @@
 {
     "name": "top",
     "env" : {
-        "publicHostname" : "process.env.publicHostname||root-launcher.vcap.me"
+        "publicHostname" : "process.env.publicHostname||root-launcher.cafjs.com"
     },
     "components": [
         {
@@ -22,7 +22,7 @@
                 "appPublisher" : "root",
                 "appLocalName" : "launcher",
                 "allowNobodyUser" : false,
-                "accountsURL": "http://root-accounts.vcap.me"
+                "accountsURL": "https://root-accounts.cafjs.com"
             }
         },
         {
