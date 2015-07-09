@@ -27,17 +27,6 @@
         },
         {
             "name": "cp"
-        },
-        {
-            "name" : "react",
-            "module": "caf_react#plug",
-            "description": "React.js background rendering",
-            "env": {
-                "appFileName" : "../public/index.html",
-                "separator" : "<section id=\"content\">",
-                "cacheService" : "cp",
-                "expiresInSec" : 60
-            }
         }
     ]
 }

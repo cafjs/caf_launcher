@@ -28,25 +28,6 @@
                     }
                 }
             ]
-        },
-        {
-            "module": "caf_react#plug_ca",
-            "name": "react",
-            "description": "Manages background rendering for this CA.",
-            "env" : {
-                "maxRetries" : "$._.env.maxRetries",
-                "retryDelay" : "$._.env.retryDelay"
-            },
-            "components" : [
-                {
-                    "module": "caf_react#proxy",
-                    "name": "proxy",
-                    "description": "Provides the background rendering API.",
-                    "env" : {
-
-                    }
-                }
-            ]
         }
     ]
 }
