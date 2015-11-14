@@ -144,11 +144,13 @@ AppActions.setCurrent = function(newCurrent) {
 };
 
 AppActions.changeRemoveModal = function(current, isOpen) {
+    current = (current === null ? {url: 'blank.html', target: null} : current);
     current.removeModal = isOpen;
     AppActions.setCurrent(current);
 };
 
 AppActions.changeAddModal = function(current, isOpen) {
+    current = (current === null ? {url: 'blank.html', target: null} : current);
     current.addModal = isOpen;
     AppActions.setCurrent(current);
 };

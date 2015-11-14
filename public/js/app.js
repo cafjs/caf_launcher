@@ -1,5 +1,6 @@
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var MyApp = require('./components/MyApp');
 var AppActions = require('./actions/AppActions');
 var json_rpc = require('caf_transport').json_rpc;
@@ -31,6 +32,6 @@ exports.main = function(data) {
     if (info.disableCache) {
         AppActions.disableCache(true);
     }
-    React.render(cE(MyApp, null), document.getElementById('content'));
+    ReactDOM.render(cE(MyApp, null), document.getElementById('content'));
     return null;
 };

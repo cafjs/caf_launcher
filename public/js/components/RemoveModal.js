@@ -4,64 +4,38 @@ var cE = React.createElement;
 var AppActions = require('../actions/AppActions');
 
 var RemoveModal = {
-    mixins: [rB.OverlayMixin],
-
-    getInitialState : function() {
-        return {
-            isModalOpen: false
-        };
-    },
-
-    handleModal: function(isOpen) {
-        this.setState({isModalOpen: isOpen });
-    },
-
-    componentWillReceiveProps: function(nextProps) {
-        this.handleModal(nextProps.current.removeModal);
-    },
-
-    render: function() {
-        return (cE('span',{}));
-    },
 
     doRemove: function(ev) {
         AppActions.removeApp(this.props.current.target);
-        AppActions.setCurrent(null);
-        this.handleModal(false);
+        AppActions.changeRemoveModal(null, false);
     },
 
     doCancel: function(ev) {
         AppActions.changeRemoveModal(this.props.current, false);
-        this.handleModal(false);
     },
 
-  // This is called by the `OverlayMixin` when this component
-  // is mounted or updated and the return value is appended to the body.
-    renderOverlay: function() {
-        if (this.state.isModalOpen) {
-            return cE(rB.Modal,
-                      React.__spread({},  this.props, {
-                                         bsStyle: "warning",
-                                         title: "Delete this app?",
-                                         onRequestHide:this.doCancel,
-                                         animation: false
-                                     }),
-                      cE("div", {className: "modal-body"},
-                         cE(rB.Input, {
-                                type: 'text',
-                                id: 'app',
-                                readOnly: 'true',
-                                value: this.props.current.target
-                            })
+    render: function() {
+            return cE(rB.Modal,{show: this.props.current.removeModal,
+                                onHide: this.doCancel,
+                                animation: false},
+                      cE(rB.Modal.Header, {
+                          className : "bg-warning text-warning",
+                          closeButton: true},
+                         cE(rB.Modal.Title, null, "Delete this app?")
                         ),
-                      cE("div", {className: "modal-footer"},
+                      cE(rB.ModalBody, null,
+                         cE(rB.Input, {
+                             type: 'text',
+                             id: 'app',
+                             readOnly: 'true',
+                             value: this.props.current.target
+                         })
+                        ),
+                      cE(rB.Modal.Footer, null,
                          cE(rB.Button, {onClick: this.doRemove}, "OK"),
                          cE(rB.Button, {onClick: this.doCancel}, "Cancel")
                         )
                      );
-        } else {
-            return cE('span',{});
-        }
     }
 };
 

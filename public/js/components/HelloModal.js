@@ -4,29 +4,19 @@ var cE = React.createElement;
 var AppActions = require('../actions/AppActions');
 
 var HelloModal = {
-    mixins: [rB.OverlayMixin],
 
     getInitialState : function() {
         return {
-            isModalOpen: false
+            isModalOpen: true
         };
     },
 
     handleModal: function(isOpen) {
         this.setState({ isModalOpen: isOpen });
     },
-
-    componentWillReceiveProps: function(nextProps) {
-        this.handleModal(nextProps.login  === null);
-    },
-
-    render: function() {
-        return (cE('span',{}));
-    },
-
     doLogin: function(ev) {
-        var caOwner = document.getElementById('caOwner').value;
-        var caLocalName = document.getElementById('caLocalName').value;
+        var caOwner = this.refs.caOwner.getValue();
+        var caLocalName = this.refs.caLocalName.getValue();
         AppActions.login(caOwner, caLocalName);
     },
 
@@ -40,37 +30,37 @@ var HelloModal = {
         }
     },
 
-  // This is called by the `OverlayMixin` when this component
-  // is mounted or updated and the return value is appended to the body.
-    renderOverlay: function() {
-        if (this.props && (this.props.login === null)) {
-console.log('modal open');
-            return cE(rB.Modal, React.__spread({},  this.props, {
-                                                   bsStyle: "primary",
-                                                   title: "Welcome to CAF!",
-                                                   onRequestHide:this.doHide,
-                                                   animation: false
-                                               }),
-                      cE("div", {className: "modal-body"},
-                         cE(rB.Input, {
-                                type: 'text',
-                                id: 'caOwner',
-                                placeholder: 'Enter account',
-                                onKeyDown: this.caOwnerChange
-                            }),
-                         cE(rB.Input, {
-                                type: 'text',
-                                id: 'caLocalName',
-                                defaultValue: 'desktop1'
-                            })
-                        ),
-                      cE("div", {className: "modal-footer"},
-                         cE(rB.Button, {onClick: this.doLogin}, "Login")
-                        )
-                     );
-        } else {
-            return cE('span',{});
-        }
+    render: function() {
+        var shouldRender = (this.props.login === null);
+
+        return cE(rB.Modal, {show: shouldRender && this.state.isModalOpen,
+                             onHide: this.doHide,
+                             animation: false},
+                  cE(rB.Modal.Header, {
+                         className : "bg-primary text-primary",
+                         closeButton: true
+                     },
+                     cE(rB.Modal.Title, null, "Welcome to CAF!")
+                    ),
+                  cE(rB.Modal.Body, null,
+                     cE(rB.Input, {
+                         type: 'text',
+                         id: 'caOwner',
+                         ref: 'caOwner',
+                         placeholder: 'Enter account',
+                         onKeyDown: this.caOwnerChange
+                     }),
+                     cE(rB.Input, {
+                         type: 'text',
+                         id: 'caLocalName',
+                         ref: 'caLocalName',
+                         defaultValue: 'desktop1'
+                     })
+                    ),
+                  cE(rB.Modal.Footer, null,
+                     cE(rB.Button, {onClick: this.doLogin}, "Login")
+                    )
+                 );
     }
 };
 

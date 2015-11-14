@@ -27,19 +27,19 @@ var MyApp = {
     _onChange : function(ev) {
         this.setState(AppStore.getState());
     },
-    handleSelect : function(selectedKey, _href, target) {
+    handleSelect : function(selectedKey, pending) {
         if (selectedKey === REMOVE_KEY) {
             AppActions.changeRemoveModal(this.state.current, true);
         } else if (selectedKey === ADD_KEY) {
             AppActions.changeAddModal(this.state.current, true);
-        } else if (selectedKey) {
+        } else if (pending) {
             AppActions.setCurrent({
-                                      url : this.state.current.url,
-                                      target: this.state.current.target,
-                                      pending: selectedKey
-                                  });
+                url : this.state.current.url,
+                target: this.state.current.target,
+                pending: pending
+            });
         } else {
-            console.log('Ignoring ' + selectedKey + ' target:' + target);
+            console.log('Ignoring ' + selectedKey + ' target:' + pending);
         }
     },
     render: function() {
@@ -50,50 +50,47 @@ var MyApp = {
         }
         return cE("div", {className: "container-fluid iframe-div"},
                   cE(ErrorModal, {
-                         error: this.state.error
-                     }),
+                      error: this.state.error
+                  }),
                   cE(HelloModal, {
-                         login: this.state.login
-                     }),
+                      login: this.state.login
+                  }),
                   cE(RemoveModal, {
-                         current: this.state.current
-                     }),
+                      current: this.state.current
+                  }),
                   cE(AddModal, {
-                         current: this.state.current,
-                         login: this.state.login
-                     }),
-                  cE(rB.Navbar, {
-                         brand: navBrand,
-                         inverse: true,
-                         toggleNavKey:0
-                     }, cE(rB.Nav, {
-                               right:true,
-                               eventKey:0,
-                               onSelect: this.handleSelect
-                           },
-                           cE(rB.NavItem, {
-                                  eventKey: REMOVE_KEY
-                              },
-                              cE('span', {
-                                     className: 'glyphicon glyphicon-remove text-danger'
-                                 })),
-                           cE(rB.NavItem, {
-                                  eventKey: ADD_KEY
-                              },
-                              cE('span', {
-                                     className: 'glyphicon glyphicon-plus text-success'
-                                 })),
-                           cE(AppsListDropdown, {
-                                  onSelect: this.handleSelect,
-                                  apps: this.state.apps
-                              })
-                          )
+                      current: this.state.current,
+                      login: this.state.login
+                  }),
+                  cE(rB.Navbar, { inverse: true,
+                                  toggleNavKey:0 },
+                     cE(rB.NavBrand, {}, navBrand),
+                     cE(rB.Nav, { right:true,
+                                  eventKey:0,
+                                  onSelect: this.handleSelect
+                                },
+                        cE(rB.NavItem, { eventKey: REMOVE_KEY },
+                           cE('span', {
+                               className: 'glyphicon glyphicon-remove text-danger'
+                           })),
+                        cE(rB.NavItem, { eventKey: ADD_KEY},
+                           cE('span', {
+                               className: 'glyphicon glyphicon-plus text-success'
+                           })),
+                        cE(AppsListDropdown, {
+                            onSelect: this.handleSelect,
+                            apps: this.state.apps,
+                            defaultOpen: ((this.state.current.target == null) &&
+                                          (Object.keys(this.state.apps)
+                                           .length > 0))
+                        })
+                       )
                     ),
                   cE('iframe', {
-                         className: "iframe-fit",
-                         frameBorder: 0,
-                         src: this.state.current.url
-                     }, null)
+                      className: "iframe-fit",
+                      frameBorder: 0,
+                      src: this.state.current.url
+                  }, null)
                  );
     }
 };

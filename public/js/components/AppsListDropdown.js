@@ -9,10 +9,11 @@ var ListDropdown = {
         var self = this;
         var apps = Object.keys(this.props.apps || {});
 
-        return cE(rB.DropdownButton, {
+        return cE(rB.NavDropdown, {
+            id : 'collapsible-navbar-dropdown',
             key: 323232,
             eventKey: DROPDOWN_KEY,
-            navItem: true,
+            defaultOpen: this.props.defaultOpen,
             title: cE('span', {
                 className: 'glyphicon glyphicon-list-alt text-success'
             })
@@ -20,10 +21,8 @@ var ListDropdown = {
             return cE(rB.MenuItem, {
                 onSelect: self.props.onSelect,
                 key:i*3232131,
-                eventKey: x,
-                href: '#',
-                target: x
-            }, x);
+                eventKey: x
+            }, cE('p', null, x));
         }));
     }
 };
