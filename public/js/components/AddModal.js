@@ -4,8 +4,10 @@ var cE = React.createElement;
 var AppActions = require('../actions/AppActions');
 var json_rpc = require('caf_transport').json_rpc;
 
-var APPS = ['root-helloworld', 'root-hellosharing','root-turtles',
-            'root-helloiot', 'root-gadget'];
+var APPS = ['root-gadget', 'root-helloworld', 'root-hellosharing',
+            'root-turtles','root-helloiot', 'root-hellodiffie',
+            'root-hellodynamic', 'root-hellofail', 'root-hellolambda',
+            'root-hellosleepy'];
 
 var AddModal = {
     getInitialState : function() {

@@ -43,6 +43,9 @@ var MyApp = {
         }
     },
     render: function() {
+        if (this.state.isClosed) {
+            AppActions.dead();
+        }
         var navBrand = 'root-launcher';
         if (this.state.login) {
             navBrand = navBrand + '#' + this.state.login.caOwner +
@@ -62,29 +65,35 @@ var MyApp = {
                       current: this.state.current,
                       login: this.state.login
                   }),
-                  cE(rB.Navbar, { inverse: true,
-                                  toggleNavKey:0 },
-                     cE(rB.NavBrand, {}, navBrand),
-                     cE(rB.Nav, { right:true,
-                                  eventKey:0,
-                                  onSelect: this.handleSelect
-                                },
-                        cE(rB.NavItem, { eventKey: REMOVE_KEY },
-                           cE('span', {
-                               className: 'glyphicon glyphicon-remove text-danger'
-                           })),
-                        cE(rB.NavItem, { eventKey: ADD_KEY},
-                           cE('span', {
-                               className: 'glyphicon glyphicon-plus text-success'
-                           })),
-                        cE(AppsListDropdown, {
-                            onSelect: this.handleSelect,
-                            apps: this.state.apps,
-                            defaultOpen: ((this.state.current.target == null) &&
-                                          (Object.keys(this.state.apps)
-                                           .length > 0))
-                        })
-                       )
+                  cE(rB.Navbar, { inverse: true},
+                     cE(rB.Navbar.Header, null,
+                        cE(rB.Navbar.Brand, {}, navBrand),
+                        cE(rB.Navbar.Toggle)
+                       ),
+                      cE(rB.Navbar.Collapse, null,
+                         cE(rB.Nav, { pullRight:true,
+                                      eventKey:0,
+                                      onSelect: this.handleSelect
+                                    },
+                            cE(rB.NavItem, { eventKey: REMOVE_KEY },
+                               cE('span', {
+                                   className:
+                                   'glyphicon glyphicon-remove text-danger'
+                               })),
+                            cE(rB.NavItem, { eventKey: ADD_KEY},
+                               cE('span', {
+                                   className:
+                                   'glyphicon glyphicon-plus text-success'
+                               })),
+                            cE(AppsListDropdown, {
+                                onSelect: this.handleSelect,
+                                apps: this.state.apps,
+                                defaultOpen:
+                                ((this.state.current.target == null) &&
+                                 (Object.keys(this.state.apps).length > 0))
+                            })
+                           )
+                        )
                     ),
                   cE('iframe', {
                       className: "iframe-fit",

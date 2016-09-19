@@ -11,6 +11,10 @@ var HelloModal = {
         };
     },
 
+    componentDidMount: function() {
+        this.refs.caOwner && this.refs.caOwner.getInputDOMNode().focus();
+    },
+
     handleModal: function(isOpen) {
         this.setState({ isModalOpen: isOpen });
     },

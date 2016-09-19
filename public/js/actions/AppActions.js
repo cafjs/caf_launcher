@@ -155,5 +155,25 @@ AppActions.changeAddModal = function(current, isOpen) {
     AppActions.setCurrent(current);
 };
 
+var DEAD_PAGE = '<!DOCTYPE html> \
+<html> \
+  <head> \
+    <title>Cloud Assistant Framework</title> \
+  </head> \
+  <body> \
+    <h1> Launcher App Lost Connection, Please Reload</h1> \
+  </body> \
+</html>';
+
+// after (new Buffer(DEAD_PAGE)).toString('base64')
+var DEAD_PAGE_BASE64 = 'PCFET0NUWVBFIGh0bWw+IDxodG1sPiAgIDxoZWFkPiAgICAgPHRpdGxlPkNsb3VkIEFzc2lzdGFudCBGcmFtZXdvcms8L3RpdGxlPiAgIDwvaGVhZD4gICA8Ym9keT4gICAgIDxoMT4gTGF1bmNoZXIgQXBwIExvc3QgQ29ubmVjdGlvbiwgUGxlYXNlIFJlbG9hZDwvaDE+ICAgPC9ib2R5PiA8L2h0bWw+';
+
+AppActions.dead = function() {
+    var current = {url: 'data:text/html;charset=utf-8;base64,' +
+                   DEAD_PAGE_BASE64, target: null};
+    setTimeout(function() {
+        AppActions.setCurrent(current);
+    }, 0);
+};
 
 module.exports = AppActions;

@@ -10,7 +10,7 @@ var ListDropdown = {
         var apps = Object.keys(this.props.apps || {});
 
         return cE(rB.NavDropdown, {
-            id : 'collapsible-navbar-dropdown',
+            id : 'basic-navbar-dropdown',
             key: 323232,
             eventKey: DROPDOWN_KEY,
             defaultOpen: this.props.defaultOpen,
