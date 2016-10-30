@@ -65,7 +65,7 @@ var MyApp = {
                       current: this.state.current,
                       login: this.state.login
                   }),
-                  cE(rB.Navbar, { inverse: true},
+                  cE(rB.Navbar, { inverse: true, collapseOnSelect: true},
                      cE(rB.Navbar.Header, null,
                         cE(rB.Navbar.Brand, {}, navBrand),
                         cE(rB.Navbar.Toggle)
