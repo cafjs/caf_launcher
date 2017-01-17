@@ -7,7 +7,7 @@ var json_rpc = require('caf_transport').json_rpc;
 var APPS = ['root-gadget', 'root-helloworld', 'root-hellosharing',
             'root-turtles','root-helloiot', 'root-hellodiffie',
             'root-hellodynamic', 'root-hellofail', 'root-hellolambda',
-            'root-hellosleepy'];
+            'root-hellosleepy','root-hellopresent'];
 
 var AddModal = {
     getInitialState : function() {
