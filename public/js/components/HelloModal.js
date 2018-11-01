@@ -2,43 +2,53 @@ var React = require('react');
 var rB = require('react-bootstrap');
 var cE = React.createElement;
 var AppActions = require('../actions/AppActions');
+var AppSession = require('../session/AppSession');
 
-var HelloModal = {
+class HelloModal extends React.Component {
 
-    getInitialState : function() {
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             isModalOpen: true
         };
-    },
+    }
 
-    componentDidMount: function() {
+    componentDidMount() {
         this.refs.caOwner && this.refs.caOwner.getInputDOMNode().focus();
-    },
+    }
 
-    handleModal: function(isOpen) {
+    handleModal(isOpen) {
         this.setState({ isModalOpen: isOpen });
-    },
-    doLogin: function(ev) {
+    }
+
+    async doLogin(ev) {
         var caOwner = this.refs.caOwner.getValue();
         var caLocalName = this.refs.caLocalName.getValue();
-        AppActions.login(caOwner, caLocalName);
-    },
+        if (caOwner && caLocalName) {
+            await AppSession.connect(this.props.ctx, caOwner, caLocalName);
+        } else {
+            var err = new Error('Invalid Login: Missing Inputs');
+            err.caOwner = caOwner;
+            err.caLocalName = caLocalName;
+            AppActions.setError(this.props.ctx, err);
+        }
+    }
 
-    doHide: function(ev) {
+    doHide(ev) {
         this.handleModal(false);
-    },
+    }
 
-    caOwnerChange: function(ev) {
+    caOwnerChange(ev) {
         if (ev.key === 'Enter') {
             this.doLogin(ev);
         }
-    },
+    }
 
-    render: function() {
+    render() {
         var shouldRender = (this.props.login === null);
 
         return cE(rB.Modal, {show: shouldRender && this.state.isModalOpen,
-                             onHide: this.doHide,
+                             onHide: this.doHide.bind(this),
                              animation: false},
                   cE(rB.Modal.Header, {
                          className : "bg-primary text-primary",
@@ -52,7 +62,7 @@ var HelloModal = {
                          id: 'caOwner',
                          ref: 'caOwner',
                          placeholder: 'Enter account',
-                         onKeyDown: this.caOwnerChange
+                         onKeyDown: this.caOwnerChange.bind(this)
                      }),
                      cE(rB.Input, {
                          type: 'text',
@@ -62,10 +72,10 @@ var HelloModal = {
                      })
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doLogin}, "Login")
+                     cE(rB.Button, {onClick: this.doLogin.bind(this)}, "Login")
                     )
                  );
     }
 };
 
-module.exports = React.createClass(HelloModal);
+module.exports = HelloModal;

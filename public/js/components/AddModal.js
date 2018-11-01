@@ -7,30 +7,32 @@ var json_rpc = require('caf_transport').json_rpc;
 var APPS = ['root-gadget', 'root-helloworld', 'root-hellosharing',
             'root-turtles','root-helloiot', 'root-hellodiffie',
             'root-hellodynamic', 'root-hellofail', 'root-hellolambda',
-            'root-hellosleepy','root-hellopresent'];
+            'root-hellosleepy','root-hellopresent', 'root-bodysnatcher'];
 
-var AddModal = {
-    getInitialState : function() {
-        return {};
-    },
+class AddModal  extends React.Component  {
 
-    doHide: function(ev) {
-        AppActions.changeAddModal(this.props.current, false);
-    },
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-    handleAppPublisher: function() {
+    doHide(ev) {
+        AppActions.changeAddModal(this.props.ctx, this.props.current, false);
+    }
+
+    handleAppPublisher() {
         this.setState({appPublisher: this.refs.appPublisher.getValue()});
-    },
+    }
 
-    handleAppLocalName: function() {
+    handleAppLocalName() {
         this.setState({appLocalName: this.refs.appLocalName.getValue()});
-    },
+    }
 
-    handleCALocalName: function() {
+    handleCALocalName() {
         this.setState({caLocalName: this.refs.caLocalName.getValue()});
-    },
+    }
 
-    doAdd: function(ev) {
+    doAdd(ev) {
         var appPublisher = this.state.appPublisher;
         var appLocalName = this.state.appLocalName;
         var caOwner =  this.props.login.caOwner;
@@ -39,30 +41,30 @@ var AddModal = {
             .joinNameArray([json_rpc.joinName(appPublisher, appLocalName),
                             json_rpc.joinName(caOwner, caLocalName)],
                            json_rpc.APP_SEPARATOR);
-        AppActions.setCurrent({
+        AppActions.setCurrent(this.props.ctx, {
             url : this.props.current.url,
             target: this.props.current.target,
             pending: app
         });
-        AppActions.addApp(app);
-    },
+        AppActions.addApp(this.props.ctx, app);
+    }
 
-    submit: function(ev) {
+    submit(ev) {
         this.handleCALocalName(ev);
         if (ev.key === 'Enter') {
             this.doAdd(ev);
         }
-    },
+    }
 
-    onSelect: function(ev, selectedKey) {
+    onSelect(ev, selectedKey) {
         var split = json_rpc.splitName(selectedKey);
         this.setState({appPublisher: split[0]});
         this.setState({appLocalName: split[1]});
-    },
+    }
 
-    render: function() {
+    render() {
         return cE(rB.Modal, {show: this.props.current.addModal,
-                             onHide: this.doHide,
+                             onHide: this.doHide.bind(this),
                              animation: false},
                   cE(rB.Modal.Header, {
                       className : "bg-primary text-primary",
@@ -75,14 +77,14 @@ var AddModal = {
                          type: 'text',
                          ref: 'appPublisher',
                          value: this.state.appPublisher,
-                         onChange : this.handleAppPublisher,
+                         onChange : this.handleAppPublisher.bind(this),
                          placeholder: 'Enter application publisher'
                      }),
                      cE(rB.Input, {
                          type: 'text',
                          ref: 'appLocalName',
                          value: this.state.appLocalName,
-                         onChange : this.handleAppLocalName,
+                         onChange : this.handleAppLocalName.bind(this),
                          placeholder: 'Enter application name'
                      }),
                      cE(rB.Input, {
@@ -96,14 +98,14 @@ var AddModal = {
                          type: 'text',
                          ref: 'caLocalName',
                          value: this.state.caLocalName,
-                         onChange : this.handleCALocalName,
+                         onChange : this.handleCALocalName.bind(this),
                          placeholder: 'Enter CA name',
-                         onKeyDown: this.submit
+                         onKeyDown: this.submit.bind(this)
                      })
                     ),
                   cE(rB.Modal.Footer, null,
                      cE(rB.DropdownButton, {
-                         onSelect: this.onSelect,
+                         onSelect: this.onSelect.bind(this),
                          title: 'Find'
                      }, APPS.map(function(x, i) {
                          return cE(rB.MenuItem, {
@@ -114,10 +116,10 @@ var AddModal = {
                          }, x);
                      })
                        ),
-                     cE(rB.Button, {onClick: this.doAdd}, "Add")
+                     cE(rB.Button, {onClick: this.doAdd.bind(this)}, "Add")
                     )
                  );
     }
 };
 
-module.exports = React.createClass(AddModal);
+module.exports = AddModal;

@@ -3,19 +3,22 @@ var rB = require('react-bootstrap');
 var cE = React.createElement;
 var AppActions = require('../actions/AppActions');
 
-var ErrorModal = {
+class ErrorModal extends React.Component  {
 
-    doDismissError: function(ev) {
-        AppActions.resetError();
-    },
+    constructor(props) {
+        super(props);
+    }
 
-    render: function() {
-        return cE(rB.Modal,{show: this.props.error,
-                            onHide: this.doDismissError,
-                            animation: false},
-                  cE(rB.Modal.Header, {
-                      className : "bg-warning text-warning",
-                      closeButton: true},
+    doDismissError(ev) {
+        AppActions.resetError(this.props.ctx);
+    }
+
+    render() {
+        return cE(rB.Modal, { show: this.props.error,
+                              onHide: this.doDismissError.bind(this),
+                              animation: false},
+                  cE(rB.Modal.Header, { className : "bg-warning text-warning",
+                                        closeButton: true },
                      cE(rB.Modal.Title, null, "Error")
                     ),
                   cE(rB.ModalBody, null,
@@ -25,10 +28,11 @@ var ErrorModal = {
                        )
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doDismissError}, "Continue")
+                     cE(rB.Button, {onClick: this.doDismissError.bind(this)},
+                        "Continue")
                     )
                  );
     }
 };
 
-module.exports = React.createClass(ErrorModal);
+module.exports = ErrorModal;

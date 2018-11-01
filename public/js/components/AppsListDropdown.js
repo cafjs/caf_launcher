@@ -4,8 +4,13 @@ var cE = React.createElement;
 
 var DROPDOWN_KEY = 3;
 
-var ListDropdown = {
-    render: function() {
+class  ListDropdown extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
         var self = this;
         var apps = Object.keys(this.props.apps || {});
 
@@ -27,4 +32,4 @@ var ListDropdown = {
     }
 };
 
-module.exports = React.createClass(ListDropdown);
+module.exports = ListDropdown;
