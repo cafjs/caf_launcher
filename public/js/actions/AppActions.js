@@ -1,6 +1,5 @@
 "use strict";
 
-var cli = require('caf_cli');
 var AppConstants = require('../constants/AppConstants');
 var json_rpc = require('caf_transport').json_rpc;
 
@@ -58,8 +57,7 @@ var wsStatusF =  function(store, isClosed) {
 var AppActions = {
     async init(ctx) {
         try {
-            var megaToken =  cli.extractTokenFromURL(window.location.href);
-            var data = await ctx.session.hello(megaToken).getPromise();
+            var data = await ctx.session.hello(ctx.token).getPromise();
             updateF(ctx.store, data);
         } catch (err) {
             errorF(ctx.store, err);

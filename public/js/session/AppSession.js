@@ -8,7 +8,8 @@ exports.connect = function(ctx, caOwner, caLocalName) {
             caLocalName: caLocalName
         });
         var session = new cli.Session(window.location.href, null,
-                                      {unrestrictedToken: true});
+                                      { unrestrictedToken: true,
+                                        token: ctx.token });
 
         session.onopen = async function() {
             console.log('open session');

@@ -1,9 +1,11 @@
 .iframe-div {
     position: relative;
     overflow: hidden;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 .iframe-fit {
-    top: 0; 
+    top: 0;
     left: 0;
     width: 100%;
     min-height: calc(100% - (72px));
@@ -14,3 +16,26 @@
 
 .modal-content {overflow: visible !important; }
 
+.menu-heading-item {
+    color: #FFFFFF;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.menu-item {
+    color: #FFFFFF;
+    font-size: 1.15em;
+
+}
+
+.menu-add-item {
+    color: #3c763d;
+    font-size: 1.1em;
+
+}
+
+.menu-remove-item {
+    color: #a94442;
+    font-size: 1.1em;
+
+}

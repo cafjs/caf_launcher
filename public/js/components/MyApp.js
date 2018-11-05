@@ -8,7 +8,7 @@ var AddModal = require('./AddModal');
 var RemoveModal = require('./RemoveModal');
 var ErrorModal = require('./ErrorModal');
 var AppStatus = require('./AppStatus');
-var MenuNavbar = require('./MenuNavbar');
+var MenuBurger = require('./MenuBurger');
 var Iframe = require('./Iframe');
 
 class MyApp extends React.Component {
@@ -43,7 +43,8 @@ class MyApp extends React.Component {
         if (this.state.isClosed) {
             AppActions.dead(this.props.ctx);
         }
-        return cE("div", {className: "container-fluid iframe-div"},
+        return cE("div", {id: 'outer-container',
+                          className: "container-fluid iframe-div"},
                   cE(ErrorModal, {
                       ctx: this.props.ctx,
                       error: this.state.error
@@ -61,7 +62,7 @@ class MyApp extends React.Component {
                       current: this.state.current,
                       login: this.state.login
                   }),
-                  cE(MenuNavbar, {
+                  cE(MenuBurger, {
                       ctx: this.props.ctx,
                       current: this.state.current,
                       login: this.state.login,

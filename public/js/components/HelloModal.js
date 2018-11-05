@@ -38,7 +38,7 @@ class HelloModal extends React.Component {
         this.handleModal(false);
     }
 
-    caOwnerChange(ev) {
+    keyDown(ev) {
         if (ev.key === 'Enter') {
             this.doLogin(ev);
         }
@@ -62,17 +62,21 @@ class HelloModal extends React.Component {
                          id: 'caOwner',
                          ref: 'caOwner',
                          placeholder: 'Enter account',
-                         onKeyDown: this.caOwnerChange.bind(this)
+                         onKeyDown: this.keyDown.bind(this)
                      }),
                      cE(rB.Input, {
                          type: 'text',
                          id: 'caLocalName',
                          ref: 'caLocalName',
-                         defaultValue: 'desktop1'
+                         defaultValue: 'desktop1',
+                         onKeyDown: this.keyDown.bind(this)
                      })
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doLogin.bind(this)}, "Login")
+                     cE(rB.Button, {onClick: this.doLogin.bind(this)},
+                        "Login"),
+                     cE(rB.Button, {onClick: this.doLogin.bind(this)},
+                        "Sign Up")
                     )
                  );
     }
