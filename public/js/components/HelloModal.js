@@ -11,6 +11,10 @@ class HelloModal extends React.Component {
         this.state = {
             isModalOpen: true
         };
+        this.doLogin = this.doLogin.bind(this);
+        this.doNewAccount = this.doNewAccount.bind(this);
+        this.keyDown = this.keyDown.bind(this);
+        this.doHide = this.doHide.bind(this);
     }
 
     componentDidMount() {
@@ -21,17 +25,22 @@ class HelloModal extends React.Component {
         this.setState({ isModalOpen: isOpen });
     }
 
-    async doLogin(ev) {
+    async doLogin(ev, isNewAccount) {
         var caOwner = this.refs.caOwner.getValue();
         var caLocalName = this.refs.caLocalName.getValue();
         if (caOwner && caLocalName) {
-            await AppSession.connect(this.props.ctx, caOwner, caLocalName);
+            await AppSession.connect(this.props.ctx, caOwner, caLocalName,
+                                     isNewAccount);
         } else {
             var err = new Error('Invalid Login: Missing Inputs');
             err.caOwner = caOwner;
             err.caLocalName = caLocalName;
             AppActions.setError(this.props.ctx, err);
         }
+    }
+
+    doNewAccount(ev) {
+        this.doLogin(ev, true);
     }
 
     doHide(ev) {
@@ -48,7 +57,7 @@ class HelloModal extends React.Component {
         var shouldRender = (this.props.login === null);
 
         return cE(rB.Modal, {show: shouldRender && this.state.isModalOpen,
-                             onHide: this.doHide.bind(this),
+                             onHide: this.doHide,
                              animation: false},
                   cE(rB.Modal.Header, {
                          className : "bg-primary text-primary",
@@ -62,20 +71,20 @@ class HelloModal extends React.Component {
                          id: 'caOwner',
                          ref: 'caOwner',
                          placeholder: 'Enter account',
-                         onKeyDown: this.keyDown.bind(this)
+                         onKeyDown: this.keyDown
                      }),
                      cE(rB.Input, {
                          type: 'text',
                          id: 'caLocalName',
                          ref: 'caLocalName',
                          defaultValue: 'desktop1',
-                         onKeyDown: this.keyDown.bind(this)
+                         onKeyDown: this.keyDown
                      })
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doLogin.bind(this)},
+                     cE(rB.Button, {onClick: this.doLogin},
                         "Login"),
-                     cE(rB.Button, {onClick: this.doLogin.bind(this)},
+                     cE(rB.Button, {onClick: this.doNewAccount},
                         "Sign Up")
                     )
                  );

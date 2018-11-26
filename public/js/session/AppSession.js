@@ -1,15 +1,17 @@
 var cli = require('caf_cli');
 var AppActions = require('../actions/AppActions');
 
-exports.connect = function(ctx, caOwner, caLocalName) {
+exports.connect = function(ctx, caOwner, caLocalName, isNewAccount) {
     return new Promise((resolve, reject) => {
         window.location.href = cli.patchURL(window.location.href, {
             caOwner: caOwner,
             caLocalName: caLocalName
         });
-        var session = new cli.Session(window.location.href, null,
-                                      { unrestrictedToken: true,
-                                        token: ctx.token });
+        var options = { unrestrictedToken: true, token: ctx.token };
+        if (isNewAccount) {
+            options['newAccount'] = true;
+        }
+        var session = new cli.Session(window.location.href, null, options);
 
         session.onopen = async function() {
             console.log('open session');
