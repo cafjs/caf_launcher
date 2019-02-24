@@ -88,8 +88,12 @@ var AppActions = {
     changeAddModal(ctx, current, isOpen) {
         current = (current === null ? {url: 'blank.html', target: null} :
                    current);
+
         current.addModal = isOpen;
         AppActions.setCurrent(ctx, current);
+    },
+    changeRegisterModal(ctx, isOpen) {
+        updateF(ctx.store, {register: isOpen});
     },
     dead(ctx) {
         var current = {url: 'data:text/html;charset=utf-8;base64,' +
@@ -109,19 +113,19 @@ var AppActions = {
     }
 };
 
-['addApp', 'removeApp', 'setMegaToken', 'setCacheKey', 'refreshTokens']
-    .forEach(function(x) {
-        AppActions[x] = async function() {
-            try {
-                var args = Array.prototype.slice.call(arguments);
-                var ctx = args.shift();
-                var data = await ctx.session[x].apply(ctx.session, args)
-                        .getPromise();
-                updateF(ctx.store, data);
-            } catch (err) {
-                errorF(ctx.store, err);
-            }
-        };
-    });
+['addApp', 'removeApp', 'registerApp', 'setMegaToken', 'setCacheKey',
+ 'refreshTokens'].forEach(function(x) {
+     AppActions[x] = async function() {
+         try {
+             var args = Array.prototype.slice.call(arguments);
+             var ctx = args.shift();
+             var data = await ctx.session[x].apply(ctx.session, args)
+                     .getPromise();
+             updateF(ctx.store, data);
+         } catch (err) {
+             errorF(ctx.store, err);
+         }
+     };
+ });
 
 module.exports = AppActions;

@@ -7,6 +7,7 @@ var AppActions = require('../actions/AppActions');
 var REMOVE_KEY = 1;
 var ADD_KEY = 2;
 var DROPDOWN_KEY = 3;
+var REGISTER_KEY = 4;
 
 var styles = {
     bmBurgerButton: {
@@ -67,6 +68,9 @@ class MenuBurger extends  React.Component  {
         } else if (selectedKey === ADD_KEY) {
             this.closeMenu();
             AppActions.changeAddModal(this.props.ctx, this.props.current, true);
+        }  else if (selectedKey === REGISTER_KEY) {
+            this.closeMenu();
+            AppActions.changeRegisterModal(this.props.ctx, true);
         } else if (pending) {
             this.closeMenu();
             AppActions.setCurrent(this.props.ctx, {
@@ -87,6 +91,11 @@ class MenuBurger extends  React.Component  {
     removeApp(event) {
         event.preventDefault();
         this.handleSelect(REMOVE_KEY);
+    }
+
+    registerApp(event) {
+        event.preventDefault();
+        this.handleSelect(REGISTER_KEY);
     }
 
     switchApp(event) {
@@ -129,14 +138,23 @@ class MenuBurger extends  React.Component  {
                           onClick: this.addApp.bind(this)
                       },  cE('span', {
                           className: 'glyphicon glyphicon-plus text-success'
-                      }), cE('span', null, ' Add App')),
+                      }), cE('span', null, ' Add CA')),
+
+                      cE('a', {
+                          className:  'menu-register-item',
+                          key: 121424,
+                          onClick: this.registerApp.bind(this)
+                      },  cE('span', {
+                          className: 'glyphicon glyphicon-pencil text-success'
+                      }), cE('span', null, ' Register App')),
+
                       cE('a', {
                           className:  'menu-remove-item',
                            key: 3312114,
                           onClick: this.removeApp.bind(this)
                       },  cE('span', {
                           className: 'glyphicon  glyphicon-remove text-danger'
-                      }), cE('span', null, ' Remove App')),
+                      }), cE('span', null, ' Remove CA')),
                       cE('hr', {key: 43434})
                   ].concat(
                       apps.map((x, i) =>  cE('a', {

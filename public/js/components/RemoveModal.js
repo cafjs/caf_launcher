@@ -27,7 +27,7 @@ class RemoveModal extends React.Component {
                       closeButton: true},
                      cE(rB.Modal.Title, null, "Delete this app?")
                     ),
-                  cE(rB.ModalBody, null,
+                  cE(rB.Modal.Body, null,
                      cE(rB.Input, {
                          type: 'text',
                          id: 'app',

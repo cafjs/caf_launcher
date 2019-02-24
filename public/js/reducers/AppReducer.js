@@ -12,6 +12,7 @@ var AppReducer = function(state, action) {
             notif :[],
             cacheKeys : {},
             isClosed: false,
+            register: false,
             disableCache: false
         };
     } else {

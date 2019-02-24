@@ -26,7 +26,7 @@ class Iframe extends React.Component {
 
             var cacheKey = this.props.cacheKeys[this.props.current.pending];
             if (!cacheKey) {
-                cacheKey = new Buffer(crypto.randomBytes(15))
+                cacheKey = Buffer.from(crypto.randomBytes(15))
                     .toString('base64');
                 AppActions.setCacheKey(this.props.ctx,
                                        this.props.current.pending,
