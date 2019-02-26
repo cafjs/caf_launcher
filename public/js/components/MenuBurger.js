@@ -14,8 +14,8 @@ var styles = {
         position: 'fixed',
         width: '36px',
         height: '30px',
-        right: '36px',
-        top: '36px'
+        left: '36px',
+        top: '30px'
     },
     bmBurgerBars: {
         //        background: '#373a47',
@@ -119,7 +119,7 @@ class MenuBurger extends  React.Component  {
                 '-' + this.props.login.caLocalName;
         }
         var apps = Object.keys(this.props.apps || {});
-        return cE(rbm.scaleDown, {styles: styles, right: true,
+        return cE(rbm.scaleDown, {styles: styles, right: false,
                                   width: 375,
                                   pageWrapId: 'page-wrap',
                                   outerContainerId: 'outer-container',
