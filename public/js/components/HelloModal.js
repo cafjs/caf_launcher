@@ -25,14 +25,21 @@ class HelloModal extends React.Component {
         this.setState({ isModalOpen: isOpen });
     }
 
+    validUsername(username) {
+        return (typeof username === 'string') && (username.length > 1) &&
+            (username.match(/^[a-z0-9]+$/) !== null);
+    }
+
     async doLogin(ev, isNewAccount) {
         var caOwner = this.refs.caOwner.getValue();
         var caLocalName = this.refs.caLocalName.getValue();
-        if (caOwner && caLocalName) {
+        if (caOwner && caLocalName && this.validUsername(caOwner) &&
+            this.validUsername(caLocalName)) {
             await AppSession.connect(this.props.ctx, caOwner, caLocalName,
                                      isNewAccount);
         } else {
-            var err = new Error('Invalid Login: Missing Inputs');
+            var err = new Error('Invalid Login: Invalid Inputs: Use only ' +
+                                'lowercase ASCII or numbers');
             err.caOwner = caOwner;
             err.caLocalName = caLocalName;
             AppActions.setError(this.props.ctx, err);
