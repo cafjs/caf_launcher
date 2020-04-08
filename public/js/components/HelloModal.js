@@ -12,6 +12,7 @@ class HelloModal extends React.Component {
             isModalOpen: true
         };
         this.doLogin = this.doLogin.bind(this);
+        this.doLoginCommon = this.doLoginCommon.bind(this);
         this.doNewAccount = this.doNewAccount.bind(this);
         this.keyDown = this.keyDown.bind(this);
         this.doHide = this.doHide.bind(this);
@@ -30,7 +31,7 @@ class HelloModal extends React.Component {
             (username.match(/^[a-z0-9]+$/) !== null);
     }
 
-    async doLogin(ev, isNewAccount) {
+    async doLoginCommon(ev, isNewAccount) {
         var caOwner = this.refs.caOwner.getValue();
         var caLocalName = this.refs.caLocalName.getValue();
         if (caOwner && caLocalName && this.validUsername(caOwner) &&
@@ -46,8 +47,12 @@ class HelloModal extends React.Component {
         }
     }
 
+    doLogin(ev) {
+        this.doLoginCommon(ev, false);
+    }
+
     doNewAccount(ev) {
-        this.doLogin(ev, true);
+        this.doLoginCommon(ev, true);
     }
 
     doHide(ev) {
