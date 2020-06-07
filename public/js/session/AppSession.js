@@ -23,7 +23,7 @@ exports.connect = function(ctx, caOwner, caLocalName, isNewAccount) {
         };
 
         session.onmessage = function(msg) {
-            //        console.log('message:' + JSON.stringify(msg));
+            console.log('message:' + JSON.stringify(msg));
             AppActions.message(ctx, msg);
         };
 

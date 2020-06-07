@@ -6,11 +6,12 @@ var DEFAULT_CURRENT = {url: 'blank.html', target: null};
 var AppReducer = function(state, action) {
     if (typeof state === 'undefined') {
         return  {
-            apps :{},
+            apps: {},
+            expiredTokens: [],
             current: DEFAULT_CURRENT,
             login: null,
-            notif :[],
-            cacheKeys : {},
+            notif: [],
+            cacheKeys: {},
             isClosed: false,
             register: false,
             disableCache: false

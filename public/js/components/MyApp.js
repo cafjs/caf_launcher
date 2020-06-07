@@ -41,9 +41,22 @@ class MyApp extends React.Component {
     }
 
     render() {
+
         if (this.state.isClosed) {
             AppActions.dead(this.props.ctx);
         }
+
+        if (Array.isArray(this.state.expiredTokens) &&
+            (this.state.expiredTokens.length > 0)) {
+            if (this.state.expiredTokens.includes(this.state.current.target)) {
+                // Manual recovery by the user
+                AppActions.setCurrent(this.props.ctx, null);
+
+            }
+            AppActions.refreshTokens(this.props.ctx);
+            AppActions.setLocalState(this.props.ctx, {expiredTokens: []});
+        }
+
         return cE("div", {id: 'outer-container',
                           className: "container-fluid iframe-div"},
                   cE(ErrorModal, {

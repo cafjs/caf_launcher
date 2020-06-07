@@ -1,5 +1,19 @@
 {
     "name" : "ca",
+    "env" : {
+        "durationInSec": "process.env.DURATION_IN_SEC||86400"
+    },
     "components" : [
+        {
+            "name": "handler",
+            "components" : [
+                {
+                    "name": "props",
+                    "env" : {
+                        "durationInSec": "$._.env.durationInSec"
+                    }
+                }
+            ]
+        }
     ]
 }
