@@ -7,6 +7,8 @@ var AppReducer = function(state, action) {
     if (typeof state === 'undefined') {
         return  {
             apps: {},
+            keepToken: false,
+            warnKeepToken: false,
             expiredTokens: [],
             current: DEFAULT_CURRENT,
             login: null,

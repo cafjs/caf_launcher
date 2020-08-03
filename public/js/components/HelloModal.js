@@ -1,8 +1,8 @@
-var React = require('react');
-var rB = require('react-bootstrap');
-var cE = React.createElement;
-var AppActions = require('../actions/AppActions');
-var AppSession = require('../session/AppSession');
+const React = require('react');
+const rB = require('react-bootstrap');
+const cE = React.createElement;
+const AppActions = require('../actions/AppActions');
+const AppSession = require('../session/AppSession');
 
 class HelloModal extends React.Component {
 
@@ -16,6 +16,7 @@ class HelloModal extends React.Component {
         this.doNewAccount = this.doNewAccount.bind(this);
         this.keyDown = this.keyDown.bind(this);
         this.doHide = this.doHide.bind(this);
+        this.handleKeepToken = this.handleKeepToken.bind(this);
     }
 
     componentDidMount() {
@@ -26,20 +27,28 @@ class HelloModal extends React.Component {
         this.setState({ isModalOpen: isOpen });
     }
 
+    handleKeepToken() {
+        const keepToken =  this.refs.keepToken.getChecked();
+        if (!this.props.keepToken && keepToken) {
+            AppActions.setLocalState(this.props.ctx, {warnKeepToken: true});
+        }
+        AppActions.setLocalState(this.props.ctx, {keepToken});
+    }
+
     validUsername(username) {
         return (typeof username === 'string') && (username.length > 1) &&
             (username.match(/^[a-z0-9]+$/) !== null);
     }
 
     async doLoginCommon(ev, isNewAccount) {
-        var caOwner = this.refs.caOwner.getValue();
-        var caLocalName = this.refs.caLocalName.getValue();
+        const caOwner = this.refs.caOwner.getValue();
+        const caLocalName = this.refs.caLocalName.getValue();
         if (caOwner && caLocalName && this.validUsername(caOwner) &&
             this.validUsername(caLocalName)) {
             await AppSession.connect(this.props.ctx, caOwner, caLocalName,
-                                     isNewAccount);
+                                     isNewAccount, this.props.keepToken);
         } else {
-            var err = new Error('Invalid Login: Invalid Inputs: Use only ' +
+            const err = new Error('Invalid Login: Invalid Inputs: Use only ' +
                                 'lowercase ASCII or numbers');
             err.caOwner = caOwner;
             err.caLocalName = caLocalName;
@@ -66,7 +75,7 @@ class HelloModal extends React.Component {
     }
 
     render() {
-        var shouldRender = (this.props.login === null);
+        const shouldRender = (this.props.login === null);
 
         return cE(rB.Modal, {show: shouldRender && this.state.isModalOpen,
                              onHide: this.doHide,
@@ -75,7 +84,7 @@ class HelloModal extends React.Component {
                          className : "bg-primary text-primary",
                          closeButton: true
                      },
-                     cE(rB.Modal.Title, null, "Welcome to CAF!")
+                     cE(rB.Modal.Title, null, "Welcome to Caf.js!")
                     ),
                   cE(rB.Modal.Body, null,
                      cE(rB.Input, {
@@ -91,6 +100,13 @@ class HelloModal extends React.Component {
                          ref: 'caLocalName',
                          defaultValue: 'desktop1',
                          onKeyDown: this.keyDown
+                     }),
+                     cE(rB.Input, {
+                         label: 'Keep Token',
+                         type: 'checkbox',
+                         ref: 'keepToken',
+                         checked: this.props.keepToken,
+                         onChange: this.handleKeepToken
                      })
                     ),
                   cE(rB.Modal.Footer, null,

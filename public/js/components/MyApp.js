@@ -1,16 +1,17 @@
-var React = require('react');
-var rB = require('react-bootstrap');
-var cE = React.createElement;
+const React = require('react');
+const rB = require('react-bootstrap');
+const cE = React.createElement;
 
-var AppActions = require('../actions/AppActions');
-var HelloModal = require('./HelloModal');
-var AddModal = require('./AddModal');
-var RemoveModal = require('./RemoveModal');
-var RegisterModal = require('./RegisterModal');
-var ErrorModal = require('./ErrorModal');
-var AppStatus = require('./AppStatus');
-var MenuBurger = require('./MenuBurger');
-var Iframe = require('./Iframe');
+const AppActions = require('../actions/AppActions');
+const HelloModal = require('./HelloModal');
+const AddModal = require('./AddModal');
+const RemoveModal = require('./RemoveModal');
+const RegisterModal = require('./RegisterModal');
+const ErrorModal = require('./ErrorModal');
+const AppStatus = require('./AppStatus');
+const MenuBurger = require('./MenuBurger');
+const Iframe = require('./Iframe');
+const WarnKeepToken = require('./WarnKeepToken');
 
 class MyApp extends React.Component {
 
@@ -63,8 +64,13 @@ class MyApp extends React.Component {
                       ctx: this.props.ctx,
                       error: this.state.error
                   }),
+                  cE(WarnKeepToken, {
+                      ctx: this.props.ctx,
+                      warnKeepToken: this.state.warnKeepToken,
+                  }),
                   cE(HelloModal, {
                       ctx: this.props.ctx,
+                      keepToken: this.state.keepToken,
                       login: this.state.login
                   }),
                   cE(RemoveModal, {
