@@ -7,6 +7,7 @@ The  copyright of the original `CAF` project is assigned to `Hewlett-Packard Dev
 ## 0.4.1
 - Initialize token when waking up iot apps.
 - Add `keepToken` flag to login menu
+- Add `forgot username` button to login menu
 
 ## 0.4.0
  - Add new copyright to simplify third-party contributions

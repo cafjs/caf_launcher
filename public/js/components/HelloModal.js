@@ -3,6 +3,8 @@ const rB = require('react-bootstrap');
 const cE = React.createElement;
 const AppActions = require('../actions/AppActions');
 const AppSession = require('../session/AppSession');
+const NOBODY_USER = 'nobody';
+const NOBODY_CA = 'unknown';
 
 class HelloModal extends React.Component {
 
@@ -17,6 +19,7 @@ class HelloModal extends React.Component {
         this.keyDown = this.keyDown.bind(this);
         this.doHide = this.doHide.bind(this);
         this.handleKeepToken = this.handleKeepToken.bind(this);
+        this.doForgot = this.doForgot.bind(this);
     }
 
     componentDidMount() {
@@ -36,7 +39,7 @@ class HelloModal extends React.Component {
     }
 
     validUsername(username) {
-        return (typeof username === 'string') && (username.length > 1) &&
+        return (typeof username === 'string') && (username.length > 2) &&
             (username.match(/^[a-z0-9]+$/) !== null);
     }
 
@@ -48,12 +51,18 @@ class HelloModal extends React.Component {
             await AppSession.connect(this.props.ctx, caOwner, caLocalName,
                                      isNewAccount, this.props.keepToken);
         } else {
-            const err = new Error('Invalid Login: Invalid Inputs: Use only ' +
-                                'lowercase ASCII or numbers');
+            const err = new Error(
+                'Invalid username: lowercase ASCII or numbers only ' +
+                    '(3+ characters)'
+            );
             err.caOwner = caOwner;
             err.caLocalName = caLocalName;
             AppActions.setError(this.props.ctx, err);
         }
+    }
+
+    async doForgot(ev) {
+        await AppSession.connect(this.props.ctx, NOBODY_USER, NOBODY_CA);
     }
 
     doLogin(ev) {
@@ -91,7 +100,7 @@ class HelloModal extends React.Component {
                          type: 'text',
                          id: 'caOwner',
                          ref: 'caOwner',
-                         placeholder: 'Enter account',
+                         placeholder: 'Username',
                          onKeyDown: this.keyDown
                      }),
                      cE(rB.Input, {
@@ -110,6 +119,10 @@ class HelloModal extends React.Component {
                      })
                     ),
                   cE(rB.Modal.Footer, null,
+                      cE(rB.Button, {
+                         bsStyle: 'link',
+                         onClick: this.doForgot
+                      }, 'Forgot username?'),
                      cE(rB.Button, {onClick: this.doLogin},
                         "Login"),
                      cE(rB.Button, {onClick: this.doNewAccount},

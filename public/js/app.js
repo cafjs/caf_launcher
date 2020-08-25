@@ -19,7 +19,7 @@ var extractInfoFromURL = function() {
     if (url.hash) {
         var hashParsed = querystring.parse(url.hash.slice(1));
         if (hashParsed.from && (hashParsed.from === hashParsed.ca)) {
-            response.login =  json_rpc.splitName(hashParsed.from);
+            response.login = json_rpc.splitName(hashParsed.from);
         }
         if (hashParsed.disableCache) {
             response.disableCache = true;
