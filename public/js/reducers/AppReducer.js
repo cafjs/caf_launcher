@@ -12,6 +12,7 @@ var AppReducer = function(state, action) {
             expiredTokens: [],
             current: DEFAULT_CURRENT,
             login: null,
+            cost: null,
             notif: [],
             cacheKeys: {},
             isClosed: false,

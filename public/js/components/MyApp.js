@@ -80,6 +80,7 @@ class MyApp extends React.Component {
                   cE(AddModal, {
                       ctx: this.props.ctx,
                       current: this.state.current,
+                      cost: this.state.cost,
                       login: this.state.login
                   }),
                   cE(RegisterModal, {

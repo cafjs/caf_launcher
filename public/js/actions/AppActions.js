@@ -114,7 +114,7 @@ var AppActions = {
 };
 
 ['addApp', 'removeApp', 'registerApp', 'setMegaToken', 'setCacheKey',
- 'refreshTokens'].forEach(function(x) {
+ 'refreshTokens', 'getAppCost'].forEach(function(x) {
      AppActions[x] = async function() {
          try {
              var args = Array.prototype.slice.call(arguments);
