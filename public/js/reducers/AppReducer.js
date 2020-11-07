@@ -14,9 +14,11 @@ var AppReducer = function(state, action) {
             login: null,
             cost: null,
             notif: [],
+            units: -1,
             cacheKeys: {},
             isClosed: false,
             register: false,
+            enableWarnLowUnits: true,
             disableCache: false
         };
     } else {
