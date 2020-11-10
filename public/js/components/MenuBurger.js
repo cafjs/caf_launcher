@@ -19,7 +19,8 @@ var styles = {
     },
     bmBurgerBars: {
         //        background: '#373a47',
-        background: '#8B0000'
+        background: '#8B0000',
+        opacity: '0.5'
     },
     bmCrossButton: {
         height: '24px',

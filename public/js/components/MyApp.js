@@ -12,6 +12,7 @@ const AppStatus = require('./AppStatus');
 const MenuBurger = require('./MenuBurger');
 const Iframe = require('./Iframe');
 const WarnKeepToken = require('./WarnKeepToken');
+const WarnDestroy = require('./WarnDestroy');
 const WarnLowUnits = require('./WarnLowUnits');
 
 class MyApp extends React.Component {
@@ -68,6 +69,10 @@ class MyApp extends React.Component {
                   cE(WarnKeepToken, {
                       ctx: this.props.ctx,
                       warnKeepToken: this.state.warnKeepToken
+                  }),
+                  cE(WarnDestroy, {
+                      ctx: this.props.ctx,
+                      warnDestroy: this.state.warnDestroy
                   }),
                   cE(WarnLowUnits, {
                       ctx: this.props.ctx,

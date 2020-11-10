@@ -9,6 +9,7 @@ var AppReducer = function(state, action) {
             apps: {},
             keepToken: false,
             warnKeepToken: false,
+            warnDestroy: false,
             expiredTokens: [],
             current: DEFAULT_CURRENT,
             login: null,
