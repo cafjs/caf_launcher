@@ -10,6 +10,7 @@ class RemoveModal extends React.Component {
         this.doCancel = this.doCancel.bind(this);
         this.doRemove = this.doRemove.bind(this);
         this.handleClearState = this.handleClearState.bind(this);
+        this.handleForce = this.handleForce.bind(this);
     }
 
     handleClearState() {
@@ -20,15 +21,22 @@ class RemoveModal extends React.Component {
         AppActions.setLocalState(this.props.ctx, {clearState});
     }
 
+    handleForce() {
+        const force =  this.refs.force.getChecked();
+        AppActions.setLocalState(this.props.ctx, {force});
+    }
+
     doRemove(ev) {
         AppActions.removeApp(this.props.ctx, this.props.current.target,
-                             this.props.clearState);
-        AppActions.setLocalState(this.props.ctx, {clearState: false});
+                             !!this.props.clearState, !!this.props.force);
+        AppActions.setLocalState(this.props.ctx, {clearState: false,
+                                                  force: false});
         AppActions.changeRemoveModal(this.props.ctx, null, false);
     }
 
     doCancel(ev) {
-        AppActions.setLocalState(this.props.ctx, {clearState: false});
+        AppActions.setLocalState(this.props.ctx, {clearState: false,
+                                                  force: false});
         AppActions.changeRemoveModal(this.props.ctx, this.props.current, false);
     }
 
@@ -54,6 +62,13 @@ class RemoveModal extends React.Component {
                          ref: 'clearState',
                          checked: this.props.clearState,
                          onChange: this.handleClearState
+                     }),
+                     cE(rB.Input, {
+                         label: 'Force',
+                         type: 'checkbox',
+                         ref: 'force',
+                         checked: this.props.force,
+                         onChange: this.handleForce
                      })
                     ),
                   cE(rB.Modal.Footer, null,
