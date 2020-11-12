@@ -23,10 +23,12 @@ class RemoveModal extends React.Component {
     doRemove(ev) {
         AppActions.removeApp(this.props.ctx, this.props.current.target,
                              this.props.clearState);
+        AppActions.setLocalState(this.props.ctx, {clearState: false});
         AppActions.changeRemoveModal(this.props.ctx, null, false);
     }
 
     doCancel(ev) {
+        AppActions.setLocalState(this.props.ctx, {clearState: false});
         AppActions.changeRemoveModal(this.props.ctx, this.props.current, false);
     }
 
