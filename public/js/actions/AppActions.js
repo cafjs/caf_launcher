@@ -95,6 +95,9 @@ var AppActions = {
     changeRegisterModal(ctx, isOpen) {
         updateF(ctx.store, {register: isOpen});
     },
+    changeUnregisterModal(ctx, isOpen) {
+        updateF(ctx.store, {unregister: isOpen});
+    },
     dead(ctx) {
         var current = {url: 'data:text/html;charset=utf-8;base64,' +
                        DEAD_PAGE_BASE64, target: null};
@@ -113,8 +116,8 @@ var AppActions = {
     }
 };
 
-['addApp', 'removeApp', 'registerApp', 'setMegaToken', 'setCacheKey',
- 'refreshTokens', 'getAppCost'].forEach(function(x) {
+['addApp', 'removeApp', 'registerApp', 'unregisterApp', 'setMegaToken',
+ 'setCacheKey', 'refreshTokens', 'getAppCost'].forEach(function(x) {
      AppActions[x] = async function() {
          try {
              var args = Array.prototype.slice.call(arguments);

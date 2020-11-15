@@ -7,6 +7,7 @@ const HelloModal = require('./HelloModal');
 const AddModal = require('./AddModal');
 const RemoveModal = require('./RemoveModal');
 const RegisterModal = require('./RegisterModal');
+const UnregisterModal = require('./UnregisterModal');
 const ErrorModal = require('./ErrorModal');
 const AppStatus = require('./AppStatus');
 const MenuBurger = require('./MenuBurger');
@@ -99,6 +100,11 @@ class MyApp extends React.Component {
                   cE(RegisterModal, {
                       ctx: this.props.ctx,
                       register: this.state.register,
+                      login: this.state.login
+                  }),
+                  cE(UnregisterModal, {
+                      ctx: this.props.ctx,
+                      unregister: this.state.unregister,
                       login: this.state.login
                   }),
                   cE(MenuBurger, {

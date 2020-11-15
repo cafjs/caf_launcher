@@ -19,6 +19,7 @@ var AppReducer = function(state, action) {
             cacheKeys: {},
             isClosed: false,
             register: false,
+            unregister: false,
             enableWarnLowUnits: true,
             disableCache: false
         };

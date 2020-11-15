@@ -1,15 +1,16 @@
-var React = require('react');
-var rB = require('react-bootstrap');
-var cE = React.createElement;
-var rbm = require('react-burger-menu');
-var AppActions = require('../actions/AppActions');
+const React = require('react');
+const rB = require('react-bootstrap');
+const cE = React.createElement;
+const rbm = require('react-burger-menu');
+const AppActions = require('../actions/AppActions');
 
-var REMOVE_KEY = 1;
-var ADD_KEY = 2;
-var DROPDOWN_KEY = 3;
-var REGISTER_KEY = 4;
+const REMOVE_KEY = 1;
+const ADD_KEY = 2;
+const DROPDOWN_KEY = 3;
+const REGISTER_KEY = 4;
+const UNREGISTER_KEY = 5;
 
-var styles = {
+const styles = {
     bmBurgerButton: {
         position: 'fixed',
         width: '36px',
@@ -59,6 +60,12 @@ class MenuBurger extends  React.Component  {
          this.state = {
              menuOpen: false
          };
+         this.stateChange = this.stateChange.bind(this);
+         this.addApp = this.addApp.bind(this);
+         this.registerApp = this.registerApp.bind(this);
+         this.unregisterApp = this.unregisterApp.bind(this);
+         this.removeApp = this.removeApp.bind(this);
+         this.switchApp = this.switchApp.bind(this);
      }
 
     handleSelect(selectedKey, pending) {
@@ -72,6 +79,9 @@ class MenuBurger extends  React.Component  {
         }  else if (selectedKey === REGISTER_KEY) {
             this.closeMenu();
             AppActions.changeRegisterModal(this.props.ctx, true);
+        }  else if (selectedKey === UNREGISTER_KEY) {
+            this.closeMenu();
+            AppActions.changeUnregisterModal(this.props.ctx, true);
         } else if (pending) {
             this.closeMenu();
             AppActions.setCurrent(this.props.ctx, {
@@ -99,6 +109,11 @@ class MenuBurger extends  React.Component  {
         this.handleSelect(REGISTER_KEY);
     }
 
+    unregisterApp(event) {
+        event.preventDefault();
+        this.handleSelect(UNREGISTER_KEY);
+    }
+
     switchApp(event) {
         event.preventDefault();
         this.handleSelect(DROPDOWN_KEY, event.target.id);
@@ -114,18 +129,18 @@ class MenuBurger extends  React.Component  {
 
     render() {
         //        var navBrand = 'root-launcher';
-        var navBrand = '#';
+        let navBrand = '#';
         if (this.props.login) {
             navBrand = navBrand  + this.props.login.caOwner +
                 '-' + this.props.login.caLocalName;
         }
-        var apps = Object.keys(this.props.apps || {});
+        const apps = Object.keys(this.props.apps || {});
         return cE(rbm.scaleDown, {styles: styles, right: false,
                                   width: 375,
                                   pageWrapId: 'page-wrap',
                                   outerContainerId: 'outer-container',
                                   isOpen: this.state.menuOpen,
-                                  onStateChange: this.stateChange.bind(this)
+                                  onStateChange: this.stateChange
                                  },
                   [
                       cE('a', {
@@ -136,7 +151,7 @@ class MenuBurger extends  React.Component  {
                       cE('a', {
                           className:  'menu-add-item',
                           key: 12114,
-                          onClick: this.addApp.bind(this)
+                          onClick: this.addApp
                       },  cE('span', {
                           className: 'glyphicon glyphicon-plus text-success'
                       }), cE('span', null, ' Add CA')),
@@ -144,7 +159,7 @@ class MenuBurger extends  React.Component  {
                       cE('a', {
                           className:  'menu-register-item',
                           key: 121424,
-                          onClick: this.registerApp.bind(this)
+                          onClick: this.registerApp
                       },  cE('span', {
                           className: 'glyphicon glyphicon-pencil text-success'
                       }), cE('span', null, ' Register App')),
@@ -152,17 +167,26 @@ class MenuBurger extends  React.Component  {
                       cE('a', {
                           className:  'menu-remove-item',
                            key: 3312114,
-                          onClick: this.removeApp.bind(this)
+                          onClick: this.removeApp
                       },  cE('span', {
                           className: 'glyphicon  glyphicon-remove text-danger'
                       }), cE('span', null, ' Remove CA')),
+
+                       cE('a', {
+                          className:  'menu-unregister-item',
+                          key: 1881424,
+                          onClick: this.unregisterApp
+                      },  cE('span', {
+                          className: 'glyphicon glyphicon-pencil text-danger'
+                      }), cE('span', null, ' Unregister App')),
+
                       cE('hr', {key: 43434})
                   ].concat(
                       apps.map((x, i) =>  cE('a', {
                           className: 'menu-item',
                           id: x,
                           key: i*83347 +12934,
-                          onClick: this.switchApp.bind(this)
+                          onClick: this.switchApp
                       }, x))
                   )
                  );

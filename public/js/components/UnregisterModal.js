@@ -4,24 +4,24 @@ const cE = React.createElement;
 const AppActions = require('../actions/AppActions');
 
 
-class RegisterModal extends React.Component {
+class UnregisterModal extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {};
         this.doCancel = this.doCancel.bind(this);
-        this.doRegister = this.doRegister.bind(this);
+        this.doUnregister = this.doUnregister.bind(this);
         this.handleAppLocalName = this.handleAppLocalName.bind(this);
         this.submit = this.submit.bind(this);
     }
 
-    doRegister(ev) {
-        AppActions.registerApp(this.props.ctx, this.state.appLocalName);
-        AppActions.changeRegisterModal(this.props.ctx, false);
+    doUnregister(ev) {
+        AppActions.unregisterApp(this.props.ctx, this.state.appLocalName);
+        AppActions.changeUnregisterModal(this.props.ctx, false);
     }
 
     doCancel(ev) {
-        AppActions.changeRegisterModal(this.props.ctx, false);
+        AppActions.changeUnregisterModal(this.props.ctx, false);
     }
 
     handleAppLocalName() {
@@ -31,19 +31,21 @@ class RegisterModal extends React.Component {
     submit(ev) {
         this.handleAppLocalName(ev);
         if (ev.key === 'Enter') {
-            this.doRegister(ev);
+            this.doUnregister(ev);
         }
     }
 
     render() {
-        return cE(rB.Modal, {show: this.props.register,
+        return cE(rB.Modal, {show: this.props.unregister,
                              onHide: this.doCancel,
                              animation: false},
                   cE(rB.Modal.Header, {
                       className : 'bg-primary text-primary',
                       closeButton: true
-                  }, cE(rB.Modal.Title, null, 'Register application')),
+                  }, cE(rB.Modal.Title, null, 'Unregister application')),
                   cE(rB.Modal.Body, null,
+                     cE('h4', null, 'Warning: this operation cannot be undone' +
+                        ' and the state of your app will be lost.'),
                      cE(rB.Input, {
                          type: 'text',
                          ref: 'appPublisher',
@@ -61,11 +63,11 @@ class RegisterModal extends React.Component {
                      })
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doRegister}, 'Register'),
+                     cE(rB.Button, {onClick: this.doUnregister}, 'Unregister'),
                      cE(rB.Button, {onClick: this.doCancel}, 'Cancel')
                     )
                  );
     }
 }
 
-module.exports = RegisterModal;
+module.exports = UnregisterModal;
