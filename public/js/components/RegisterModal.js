@@ -44,6 +44,8 @@ class RegisterModal extends React.Component {
                       closeButton: true
                   }, cE(rB.Modal.Title, null, 'Register application')),
                   cE(rB.Modal.Body, null,
+                     cE('h4', null, 'The price of registering an app is ' +
+                        ' one unit every 10 days.'),
                      cE(rB.Input, {
                          type: 'text',
                          ref: 'appPublisher',
