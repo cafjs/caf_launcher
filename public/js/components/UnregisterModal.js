@@ -8,11 +8,18 @@ class UnregisterModal extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {appLocalName: ''};
         this.doCancel = this.doCancel.bind(this);
         this.doUnregister = this.doUnregister.bind(this);
         this.handleAppLocalName = this.handleAppLocalName.bind(this);
         this.submit = this.submit.bind(this);
+        this.captureRef = React.createRef();
+    }
+
+    componentDidUpdate() {
+        if (this.captureRef.current && this.props.unregister) {
+            this.captureRef.current.focus();
+        }
     }
 
     doUnregister(ev) {
@@ -24,13 +31,13 @@ class UnregisterModal extends React.Component {
         AppActions.changeUnregisterModal(this.props.ctx, false);
     }
 
-    handleAppLocalName() {
-        this.setState({appLocalName: this.refs.appLocalName.getValue()});
+    handleAppLocalName(ev) {
+        this.setState({appLocalName: ev.target.value});
     }
 
     submit(ev) {
-        this.handleAppLocalName(ev);
         if (ev.key === 'Enter') {
+            ev.preventDefault();
             this.doUnregister(ev);
         }
     }
@@ -44,26 +51,47 @@ class UnregisterModal extends React.Component {
                       closeButton: true
                   }, cE(rB.Modal.Title, null, 'Unregister application')),
                   cE(rB.Modal.Body, null,
-                     cE('h4', null, 'Warning: this operation cannot be undone' +
-                        ' and the state of your app will be lost.'),
-                     cE(rB.Input, {
-                         type: 'text',
-                         ref: 'appPublisher',
-                         readOnly: true,
-                         value:  (this.props.login &&
-                                 this.props.login.caOwner) || ''
-                     }),
-                     cE(rB.Input, {
-                         type: 'text',
-                         ref: 'appLocalName',
-                         value: this.state.appLocalName,
-                         onChange : this.handleAppLocalName,
-                         onKeyDown: this.submit,
-                         placeholder: 'Enter application name'
-                     })
+                     cE(rB.Form, {horizontal: true},
+                        cE(rB.FormGroup, {controlId: 'warningId'},
+                           cE(rB.Col, {sm: 12, xs: 12},
+                              cE(rB.ControlLabel, null, 'Warning:' +
+                                 ' This operation cannot be undone' +
+                                 ' and the state of your app will be lost.')
+                             )
+                          ),
+                        cE(rB.FormGroup, {controlId: 'appPubId'},
+                           cE(rB.Col, {sm: 6, xs: 12},
+                              cE(rB.ControlLabel, null, 'App Publisher')
+                             ),
+                           cE(rB.Col, {sm: 6, xs: 12},
+                              cE(rB.FormControl, {
+                                  type: 'text',
+                                  readOnly: true,
+                                  value: (this.props.login &&
+                                          this.props.login.caOwner) || ''
+                              })
+                             )
+                          ),
+                        cE(rB.FormGroup, {controlId: 'appLocalName2Id'},
+                           cE(rB.Col, {sm: 6, xs: 12},
+                              cE(rB.ControlLabel, null, 'App Name')
+                             ),
+                           cE(rB.Col, {sm: 6, xs: 12},
+                              cE(rB.FormControl, {
+                                  type: 'text',
+                                  value: this.state.appLocalName,
+                                  onChange: this.handleAppLocalName,
+                                  placeholder: 'helloworld',
+                                  onKeyPress: this.submit,
+                                  inputRef: this.captureRef
+                              })
+                             )
+                          )
+                       )
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doUnregister}, 'Unregister'),
+                     cE(rB.Button, {onClick: this.doUnregister,
+                                    bsStyle: 'danger'}, 'Unregister'),
                      cE(rB.Button, {onClick: this.doCancel}, 'Cancel')
                     )
                  );

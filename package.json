@@ -1,17 +1,18 @@
 {
   "name": "caf_launcher",
   "description": "Cloud Assistants application launcher.",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "author": "Antonio Lain <antlai@cafjs.com>",
     "license": "Apache-2.0",
   "dependencies": {
       "caf_core": "^0.4.0",
       "caf_cli": "^0.4.0",
       "caf_transport": "^0.4.0",
-      "react" : "^0.14.0",
-      "react-dom" : "^0.14.0",
-      "react-bootstrap" : "^0.28.1",
-      "redux": "^3.5.0",
+      "react" : "^16.6.0",
+      "react-dom" : "^16.6.0",
+      "react-bootstrap" : "^0.32.4",
+      "react-slider" : "^1.0.8",
+      "redux": "^3.7.2",
       "react-burger-menu": "^2.5.4",
       "keymirror": "^0.1.0"
    },

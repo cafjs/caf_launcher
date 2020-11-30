@@ -4,16 +4,16 @@ const cE = React.createElement;
 const AppActions = require('../actions/AppActions');
 const json_rpc = require('caf_transport').json_rpc;
 
-const APPS = ['root-gadget', 'root-helloworld', 'root-hellosharing',
-            'root-turtles','root-helloiot', 'root-hellodiffie',
-            'root-hellodynamic', 'root-hellofail', 'root-hellohue',
-            'root-hellosleepy','root-hellopresent', 'root-healthypi'];
+const APPS = ['root-gadget', 'root-turtles', 'root-helloworld', 'root-helloiot',
+              'root-hellosharing', 'root-hellodiffie',
+              'root-hellodynamic', 'root-hellofail', 'root-hellohue',
+              'root-hellosleepy','root-hellopresent', 'root-healthypi'];
 
 class AddModal  extends React.Component  {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {caLocalName: '', appLocalName: '', appPublisher: ''};
         this.doAdd = this.doAdd.bind(this);
         this.doCost = this.doCost.bind(this);
         this.onSelect = this.onSelect.bind(this);
@@ -28,16 +28,16 @@ class AddModal  extends React.Component  {
         AppActions.changeAddModal(this.props.ctx, this.props.current, false);
     }
 
-    handleAppPublisher() {
-        this.setState({appPublisher: this.refs.appPublisher.getValue()});
+    handleAppPublisher(ev) {
+        this.setState({appPublisher: ev.target.value});
     }
 
-    handleAppLocalName() {
-        this.setState({appLocalName: this.refs.appLocalName.getValue()});
+    handleAppLocalName(ev) {
+        this.setState({appLocalName: ev.target.value});
     }
 
-    handleCALocalName() {
-        this.setState({caLocalName: this.refs.caLocalName.getValue()});
+    handleCALocalName(ev) {
+        this.setState({caLocalName: ev.target.value});
     }
 
     doCost(ev) {
@@ -67,13 +67,13 @@ class AddModal  extends React.Component  {
     }
 
     submit(ev) {
-        this.handleCALocalName(ev);
         if (ev.key === 'Enter') {
+            ev.preventDefault();
             this.doAdd(ev);
         }
     }
 
-    onSelect(ev, selectedKey) {
+    onSelect(selectedKey) {
         const split = json_rpc.splitName(selectedKey);
         this.setState({appPublisher: split[0]});
         this.setState({appLocalName: split[1]}, this.doCost);
@@ -95,72 +95,104 @@ class AddModal  extends React.Component  {
                       className : "bg-primary text-primary",
                       closeButton: true
                   },
-                     cE(rB.Modal.Title, null, "New application")
+                     cE(rB.Modal.Title, null, "New CA")
                     ),
                   cE(rB.ModalBody, null,
-                     [
-                         cE(rB.Input, {
-                             key: 53,
-                             type: 'text',
-                             ref: 'appPublisher',
-                             value: this.state.appPublisher,
-                             onChange : this.handleAppPublisher,
-                             placeholder: 'Enter application publisher'
-                         }),
-                         cE(rB.Input, {
-                             key: 54,
-                             type: 'text',
-                             ref: 'appLocalName',
-                             value: this.state.appLocalName,
-                             onChange : this.handleAppLocalName,
-                             placeholder: 'Enter application name'
-                         }),
-                         cE(rB.Input, {
-                             key: 55,
-                             type: 'text',
-                             ref: 'caOwner',
-                             readOnly: true,
-                             value: (this.props.login &&
-                                     this.props.login.caOwner) || ''
-                         }),
-                         cE(rB.Input, {
-                             key:56,
-                             type: 'text',
-                             ref: 'caLocalName',
-                             value: this.state.caLocalName,
-                             onChange : this.handleCALocalName,
-                             placeholder: 'Enter CA name',
-                             onKeyDown: this.submit
-                         }),
-                         (showCost ?  // 0 days/unit is invalid price
-                          cE(rB.Input, {
-                              key: 57,
-                              type: 'text',
-                              ref: 'cost',
-                              readOnly: true,
-                              value: '' + costValue + ' days/unit' +
-                                  ' (subject to change without notice)'
-                          }) :
-                          null)
-                     ].filter(x => !!x)
+                     cE(rB.Form, {horizontal: true},
+                        [
+                            cE(rB.FormGroup, {key: 53,
+                                              controlId: 'appPublisherId'},
+                               cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.ControlLabel, null, 'App Publisher')
+                                 ),
+                               cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.FormControl, {
+                                      type: 'text',
+                                      value: this.state.appPublisher,
+                                      onChange: this.handleAppPublisher,
+                                      placeholder: 'root'
+                                  })
+                                 )
+                              ),
+                            cE(rB.FormGroup, {key: 54,
+                                              controlId: 'appLocalNameId'},
+                               cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.ControlLabel, null, 'App Name')
+                                 ),
+                               cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.FormControl, {
+                                      type: 'text',
+                                      value: this.state.appLocalName,
+                                      onChange: this.handleAppLocalName,
+                                      placeholder: 'helloworld'
+                                  })
+                                 )
+                              ),
+                            cE(rB.FormGroup, {key: 55,
+                                              controlId: 'caOwnerId'},
+                               cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.ControlLabel, null, 'CA Owner')
+                                 ),
+                               cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.FormControl, {
+                                      type: 'text',
+                                      readOnly: true,
+                                      value: (this.props.login &&
+                                              this.props.login.caOwner) || ''
+                                  })
+                                 )
+                              ),
+                            cE(rB.FormGroup, {key: 56,
+                                              controlId: 'caLocalNameId'},
+                               cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.ControlLabel, null, 'CA Name')
+                                 ),
+                               cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.FormControl, {
+                                      type: 'text',
+                                      value: this.state.caLocalName,
+                                      onChange: this.handleCALocalName,
+                                      placeholder: 'myhello1',
+                                      onKeyPress: this.submit
+                                  })
+                                 )
+                              ),
+                            (showCost ?  // 0 days/unit is invalid price
+                             cE(rB.FormGroup, {key: 57,
+                                               controlId: 'costId'},
+                                cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.ControlLabel, null, 'Days/unit')
+                                  ),
+                                cE(rB.Col, {sm: 6, xs: 12},
+                                  cE(rB.FormControl, {
+                                      type: 'text',
+                                      readOnly: true,
+                                      value: '' + costValue +
+                                          ' -subject to change without notice-'
+
+                                  })
+                                 )
+                               ) :
+                             null)
+                        ].filter(x => !!x)
+                       )
                     ),
                   cE(rB.Modal.Footer, null,
                      cE(rB.DropdownButton, {
                          onSelect: this.onSelect,
+                         id: 'findId',
                          title: 'Find'
-                     }, APPS.map(function(x, i) {
-                         return cE(rB.MenuItem, {
-                             key:i*232131,
-                             eventKey: x,
-                             href: null,
-                             target: x
-                         }, x);
-                     })
+                     }, APPS.map((x, i) => cE(rB.MenuItem, {key: i*232131,
+                                                            eventKey: x,
+                                                            href: null,
+                                                            target: x
+                                                           }, x)
+                                )
                        ),
-                     cE(rB.Button, {onClick: this.doCost, bsStyle: 'primary'},
-                        "Price?"),
+                     cE(rB.Button, {onClick: this.doCost}, "Price?"),
                      cE(rB.Button, {onClick: this.doAdd, bsStyle: 'danger'},
-                        "Add")
+                        "Add"),
+                     cE(rB.Button, {onClick: this.doHide}, 'Cancel')
                     )
                  );
     }

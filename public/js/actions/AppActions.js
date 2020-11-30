@@ -116,8 +116,9 @@ var AppActions = {
     }
 };
 
-['addApp', 'removeApp', 'registerApp', 'unregisterApp', 'setMegaToken',
- 'setCacheKey', 'refreshTokens', 'getAppCost'].forEach(function(x) {
+['addApp', 'removeApp', 'registerApp', 'getDaysPerUnit', 'unregisterApp',
+ 'setMegaToken', 'setCacheKey', 'refreshTokens',
+ 'getAppCost'].forEach(function(x) {
      AppActions[x] = async function() {
          try {
              var args = Array.prototype.slice.call(arguments);

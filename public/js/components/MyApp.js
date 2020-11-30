@@ -100,7 +100,9 @@ class MyApp extends React.Component {
                   cE(RegisterModal, {
                       ctx: this.props.ctx,
                       register: this.state.register,
-                      login: this.state.login
+                      login: this.state.login,
+                      price: this.state.price,
+                      profit: this.state.profit
                   }),
                   cE(UnregisterModal, {
                       ctx: this.props.ctx,

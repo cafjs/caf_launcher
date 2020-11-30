@@ -11,8 +11,12 @@ class HelloModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isModalOpen: true
+            isModalOpen: true,
+            caLocalName: 'desktop1',
+            caOwner: ''
         };
+        this.handleCAOwner = this.handleCAOwner.bind(this);
+        this.handleLocalName = this.handleLocalName.bind(this);
         this.doLogin = this.doLogin.bind(this);
         this.doLoginCommon = this.doLoginCommon.bind(this);
         this.doNewAccount = this.doNewAccount.bind(this);
@@ -20,18 +24,32 @@ class HelloModal extends React.Component {
         this.doHide = this.doHide.bind(this);
         this.handleKeepToken = this.handleKeepToken.bind(this);
         this.doForgot = this.doForgot.bind(this);
+        this.captureRef = React.createRef();
+        this.firstUpdate = true;
     }
 
-    componentDidMount() {
-        this.refs.caOwner && this.refs.caOwner.getInputDOMNode().focus();
+    componentDidUpdate() {
+        if (this.captureRef.current && (this.props.login === null) &&
+            this.firstUpdate) {
+            this.captureRef.current.focus();
+            this.firstUpdate = false;
+        }
+    }
+
+    handleCAOwner(ev) {
+        this.setState({caOwner: ev.target.value});
+    }
+
+    handleLocalName(ev) {
+        this.setState({caLocalName: ev.target.value});
     }
 
     handleModal(isOpen) {
-        this.setState({ isModalOpen: isOpen });
+        this.setState({isModalOpen: isOpen});
     }
 
-    handleKeepToken() {
-        const keepToken =  this.refs.keepToken.getChecked();
+    handleKeepToken(e) {
+        const keepToken = e.target.checked;
         if (!this.props.keepToken && keepToken) {
             AppActions.setLocalState(this.props.ctx, {warnKeepToken: true});
         }
@@ -43,9 +61,9 @@ class HelloModal extends React.Component {
             (username.match(/^[a-z0-9]+$/) !== null);
     }
 
-    async doLoginCommon(ev, isNewAccount) {
-        const caOwner = this.refs.caOwner.getValue();
-        const caLocalName = this.refs.caLocalName.getValue();
+    async doLoginCommon(isNewAccount) {
+        const caOwner = this.state.caOwner;
+        const caLocalName = this.state.caLocalName;
         if (caOwner && caLocalName && this.validUsername(caOwner) &&
             this.validUsername(caLocalName)) {
             await AppSession.connect(this.props.ctx, caOwner, caLocalName,
@@ -66,11 +84,11 @@ class HelloModal extends React.Component {
     }
 
     doLogin(ev) {
-        this.doLoginCommon(ev, false);
+        this.doLoginCommon(false);
     }
 
     doNewAccount(ev) {
-        this.doLoginCommon(ev, true);
+        this.doLoginCommon(true);
     }
 
     doHide(ev) {
@@ -79,6 +97,7 @@ class HelloModal extends React.Component {
 
     keyDown(ev) {
         if (ev.key === 'Enter') {
+            ev.preventDefault();
             this.doLogin(ev);
         }
     }
@@ -90,33 +109,53 @@ class HelloModal extends React.Component {
                              onHide: this.doHide,
                              animation: false},
                   cE(rB.Modal.Header, {
-                         className : "bg-primary text-primary",
+                         className : 'bg-primary text-primary',
                          closeButton: true
                      },
-                     cE(rB.Modal.Title, null, "Welcome to Caf.js!")
+                     cE(rB.Modal.Title, null, 'Welcome to Caf.js!')
                     ),
                   cE(rB.Modal.Body, null,
-                     cE(rB.Input, {
-                         type: 'text',
-                         id: 'caOwner',
-                         ref: 'caOwner',
-                         placeholder: 'Username',
-                         onKeyDown: this.keyDown
-                     }),
-                     cE(rB.Input, {
-                         type: 'text',
-                         id: 'caLocalName',
-                         ref: 'caLocalName',
-                         defaultValue: 'desktop1',
-                         onKeyDown: this.keyDown
-                     }),
-                     cE(rB.Input, {
-                         label: 'Keep Token',
-                         type: 'checkbox',
-                         ref: 'keepToken',
-                         checked: this.props.keepToken,
-                         onChange: this.handleKeepToken
-                     })
+                     cE(rB.Form, {horizontal: true},
+                        cE(rB.FormGroup, {controlId: 'usernameId'},
+                           cE(rB.Col, {sm: 6, xs: 12},
+                              cE(rB.ControlLabel, null, 'Username')
+                             ),
+                           cE(rB.Col, {sm: 6, xs: 12},
+                              cE(rB.FormControl, {
+                                  type: 'text',
+                                  value: this.state.caOwner,
+                                  onChange: this.handleCAOwner,
+                                  placeholder: 'john123',
+                                  onKeyPress: this.keyDown,
+                                  inputRef: this.captureRef
+                              })
+                             )
+                          ),
+                        cE(rB.FormGroup, {controlId: 'desktopId'},
+                           cE(rB.Col, {sm: 6, xs: 12},
+                              cE(rB.ControlLabel, null, 'Desktop')
+                             ),
+                           cE(rB.Col, {sm: 6, xs: 12},
+                              cE(rB.FormControl, {
+                                  type: 'text',
+                                  value: this.state.caLocalName,
+                                  onChange: this.handleLocalName,
+                                  onKeyPress: this.keyDown
+                              })
+                             )
+                          ),
+                        cE(rB.FormGroup, {controlId: 'keepTokenId'},
+                           cE(rB.Col, {sm: 3, xs: 4},
+                              cE(rB.ControlLabel, null, 'Keep Token')
+                             ),
+                           cE(rB.Col, {sm: 1, xs: 2},
+                              cE(rB.Checkbox, {
+                                  checked: this.props.keepToken,
+                                  onChange: this.handleKeepToken
+                              })
+                             )
+                          )
+                       )
                     ),
                   cE(rB.Modal.Footer, null,
                       cE(rB.Button, {
@@ -124,9 +163,9 @@ class HelloModal extends React.Component {
                          onClick: this.doForgot
                       }, 'Forgot username?'),
                      cE(rB.Button, {onClick: this.doLogin},
-                        "Login"),
+                        'Login'),
                      cE(rB.Button, {onClick: this.doNewAccount},
-                        "Sign Up")
+                        'Sign Up')
                     )
                  );
     }

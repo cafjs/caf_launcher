@@ -1,12 +1,13 @@
-var React = require('react');
-var rB = require('react-bootstrap');
-var cE = React.createElement;
-var AppActions = require('../actions/AppActions');
+const React = require('react');
+const rB = require('react-bootstrap');
+const cE = React.createElement;
+const AppActions = require('../actions/AppActions');
 
 class ErrorModal extends React.Component  {
 
     constructor(props) {
         super(props);
+        this.doDismissError = this.doDismissError.bind(this);
     }
 
     doDismissError(ev) {
@@ -14,22 +15,20 @@ class ErrorModal extends React.Component  {
     }
 
     render() {
-        return cE(rB.Modal, { show: this.props.error,
-                              onHide: this.doDismissError.bind(this),
+        return cE(rB.Modal, { show: !!this.props.error,
+                              onHide: this.doDismissError,
                               animation: false},
-                  cE(rB.Modal.Header, { className : "bg-warning text-warning",
+                  cE(rB.Modal.Header, { className : 'bg-warning text-warning',
                                         closeButton: true },
-                     cE(rB.Modal.Title, null, "Error")
+                     cE(rB.Modal.Title, null, 'Error')
                     ),
                   cE(rB.ModalBody, null,
-                     cE('p', null, 'Message:',
-                        cE(rB.Alert, {bsStyle: 'danger'},
-                           this.props.error && this.props.error.message)
-                       )
+                     cE(rB.Alert, {bsStyle: 'danger'},
+                        this.props.error && this.props.error.message)
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doDismissError.bind(this)},
-                        "Continue")
+                     cE(rB.Button, {onClick: this.doDismissError},
+                        'Continue')
                     )
                  );
     }
