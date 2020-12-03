@@ -75,7 +75,7 @@ class RegisterModal extends React.Component {
                              ),
                            cE(rB.Col, {sm: 6, xs: 12},
                               cE(rB.FormControl.Static, null,
-                                 'One unit every 10 days.'
+                                 'One unit every 7 days.'
                                 )
                              )
                           ),
