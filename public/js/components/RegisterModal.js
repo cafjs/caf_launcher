@@ -49,6 +49,7 @@ class RegisterModal extends React.Component {
         const profit = percent/100;
         if (Math.abs(profit-this.props.profit) > 0.01) {
             AppActions.getDaysPerUnit(this.props.ctx, this.state.plan, profit);
+            AppActions.setLocalState(this.props.ctx, {profit});
         }
     }
 
