@@ -4,10 +4,10 @@ const cE = React.createElement;
 const AppActions = require('../actions/AppActions');
 const json_rpc = require('caf_transport').json_rpc;
 
-const APPS = ['root-gadget', 'root-turtles', 'root-helloworld', 'root-helloiot',
-              'root-hellosharing', 'root-hellodiffie',
-              'root-hellodynamic', 'root-hellofail', 'root-hellohue',
-              'root-hellosleepy','root-hellopresent', 'root-healthypi'];
+const APPS = ['root-gadget', 'root-turtles', 'root-helloworld', 'root-hellorpi',
+              'root-hellosharing', 'root-hellopaypal', 'root-tweetiot',
+              'root-hellofail', 'root-hellohue','root-hellographql',
+              'root-hellopresent', 'root-healthypi'];
 
 class AddModal  extends React.Component  {
 

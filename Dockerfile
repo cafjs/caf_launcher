@@ -19,7 +19,7 @@ ENV PATH="/usr/local/bin:${PATH}"
 
 RUN yarn config set prefix /usr/local
 
-RUN yarn global add caf_build browserify@17.0.0 uglify-es@3.3.9  && yarn cache clean
+RUN yarn global add caf_build@0.4.1 browserify@17.0.0 uglify-es@3.3.9  && yarn cache clean
 
 # fill the local cache
 RUN yarn global add react-dom@16.14.0 react@16.14.0 react-bootstrap@0.32.4 redux@3.7.2 && yarn global remove react-dom react react-bootstrap redux

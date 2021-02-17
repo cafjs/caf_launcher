@@ -16,6 +16,7 @@ var AppReducer = function(state, action) {
             cost: null,
             notif: [],
             profit: 0,
+            target: '',
             price: 86,
             force: false,
             clearState: false,

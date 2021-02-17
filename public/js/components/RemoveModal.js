@@ -2,6 +2,7 @@ const React = require('react');
 const rB = require('react-bootstrap');
 const cE = React.createElement;
 const AppActions = require('../actions/AppActions');
+const json_rpc = require('caf_transport').json_rpc;
 
 class RemoveModal extends React.Component {
 
@@ -11,6 +12,8 @@ class RemoveModal extends React.Component {
         this.doRemove = this.doRemove.bind(this);
         this.handleClearState = this.handleClearState.bind(this);
         this.handleForce = this.handleForce.bind(this);
+        this.handleTarget = this.handleTarget.bind(this);
+        this.submit = this.submit.bind(this);
     }
 
     handleClearState(e) {
@@ -26,16 +29,54 @@ class RemoveModal extends React.Component {
         AppActions.setLocalState(this.props.ctx, {force});
     }
 
+    handleTarget(ev) {
+        AppActions.setLocalState(this.props.ctx, {target: ev.target.value});
+    }
+
+    submit(ev) {
+        if (ev.key === 'Enter') {
+            ev.preventDefault();
+            this.doRemove(ev);
+        }
+    }
+
     doRemove(ev) {
-        AppActions.removeApp(this.props.ctx, this.props.current.target,
-                             !!this.props.clearState, !!this.props.force);
-        AppActions.setLocalState(this.props.ctx, {clearState: false,
-                                                  force: false});
-        AppActions.changeRemoveModal(this.props.ctx, null, false);
+        const isValidTarget = function(t) {
+            try {
+                const split = json_rpc.splitName(t, json_rpc.APP_SEPARATOR);
+                const app = json_rpc.splitName(split[0]);
+                const ca = json_rpc.splitName(split[1]);
+                /* Backend rejects requests to delete CAs with other owners
+                   or with no registered tokens, no need to check `ca[0]`.
+                 */
+                if ((app[0] === 'root') && (app[1] === 'people') &&
+                    (ca[1] === 'me')) {
+                    // do not delete `people` app by mistake
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (err) {
+                console.log('Invalid target due to exception: ' + err);
+                return false;
+            }
+        };
+
+        if (this.props.target && isValidTarget(this.props.target)) {
+            AppActions.removeApp(this.props.ctx, this.props.target,
+                                 !!this.props.clearState, !!this.props.force);
+            AppActions.setLocalState(this.props.ctx, {clearState: false,
+                                                      target: '',
+                                                      force: false});
+            AppActions.changeRemoveModal(this.props.ctx, null, false);
+        } else {
+            const err = new Error(`Invalid target ${this.props.target}`);
+            AppActions.setError(this.props.ctx, err);
+        }
     }
 
     doCancel(ev) {
-        AppActions.setLocalState(this.props.ctx, {clearState: false,
+        AppActions.setLocalState(this.props.ctx, {clearState: false, target: '',
                                                   force: false});
         AppActions.changeRemoveModal(this.props.ctx, this.props.current, false);
     }
@@ -58,8 +99,9 @@ class RemoveModal extends React.Component {
                            cE(rB.Col, {sm: 9, xs: 12},
                               cE(rB.FormControl, {
                                   type: 'text',
-                                  readOnly: true,
-                                  value: this.props.current.target || ''
+                                  value: this.props.target || '',
+                                  onChange: this.handleTarget,
+                                  onKeyPress: this.submit
                               })
                              )
                           ),

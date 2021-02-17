@@ -87,6 +87,7 @@ class MyApp extends React.Component {
                   }),
                   cE(RemoveModal, {
                       ctx: this.props.ctx,
+                      target: this.state.target || this.state.current.target,
                       current: this.state.current,
                       clearState: this.state.clearState,
                       force: this.state.force
