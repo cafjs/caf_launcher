@@ -119,8 +119,8 @@ class RegisterModal extends React.Component {
                                   value: this.state.plan,
                                   onChange: this.handlePlan
                               },
-                                 cE(rB.ToggleButton, {value: 'bronce'},
-                                    'Bronce'),
+                                 cE(rB.ToggleButton, {value: 'bronze'},
+                                    'Bronze'),
                                  cE(rB.ToggleButton, {value: 'silver'},
                                     'Silver'),
                                  cE(rB.ToggleButton, {value: 'gold'},
