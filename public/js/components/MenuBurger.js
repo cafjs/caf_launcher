@@ -135,7 +135,7 @@ class MenuBurger extends  React.Component  {
                 '-' + this.props.login.caLocalName;
         }
         const apps = Object.keys(this.props.apps || {});
-        return cE(rbm.scaleDown, {styles: styles, right: false,
+        return cE(rbm.slide, {styles: styles, right: false,
                                   width: 375,
                                   pageWrapId: 'page-wrap',
                                   outerContainerId: 'outer-container',
