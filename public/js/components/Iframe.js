@@ -70,7 +70,7 @@ class Iframe extends React.Component {
         return cE('iframe', {
             id: 'page-wrap',
             // disable top-navigation
-            sandbox:'allow-same-origin allow-popups allow-scripts allow-forms allow-pointer-lock',
+            sandbox:'allow-same-origin allow-popups allow-scripts allow-forms allow-pointer-lock allow-modals',
             className: 'iframe-fit',
             frameBorder: 0,
             src: this.props.current.url
