@@ -9,51 +9,9 @@ const ADD_KEY = 2;
 const DROPDOWN_KEY = 3;
 const REGISTER_KEY = 4;
 const UNREGISTER_KEY = 5;
+const SHARE_KEY = 6;
 
-const styles = {
-    bmBurgerButton: {
-        position: 'fixed',
-        width: '36px',
-        height: '30px',
-        left: '36px',
-        top: '30px'
-    },
-    bmBurgerBars: {
-        //        background: '#373a47',
-        background: '#8B0000',
-        opacity: '0.5'
-    },
-    bmCrossButton: {
-        height: '24px',
-        width: '24px'
-    },
-    bmCross: {
-        background: '#bdc3c7'
-    },
-    bmMenu: {
-        background: '#373a47',
-        padding: '1.5em 1.0em 0',
-        fontSize: '1.10em'
-    },
-    bmMorphShape: {
-        fill: '#373a47'
-    },
-    bmItemList: {
-        color: '#b8b7ad',
-        padding: '0.8em',
-        'overflowY': 'auto'
-    },
-    bmItem: {
-        display: 'block',
-        margin: '10px'
-    },
-    bmOverlay: {
-        background: 'rgba(0, 0, 0, 0.3)'
-    }
-};
-
-
-class MenuBurger extends  React.Component  {
+class MenuBurger extends React.Component  {
 
      constructor(props) {
          super(props);
@@ -65,6 +23,7 @@ class MenuBurger extends  React.Component  {
          this.registerApp = this.registerApp.bind(this);
          this.unregisterApp = this.unregisterApp.bind(this);
          this.removeApp = this.removeApp.bind(this);
+         this.shareToken = this.shareToken.bind(this);
          this.switchApp = this.switchApp.bind(this);
      }
 
@@ -82,13 +41,22 @@ class MenuBurger extends  React.Component  {
         }  else if (selectedKey === UNREGISTER_KEY) {
             this.closeMenu();
             AppActions.changeUnregisterModal(this.props.ctx, true);
+        }  else if (selectedKey === SHARE_KEY) {
+            AppActions.setLocalState(this.props.ctx,
+                                     {sharingToken: !this.props.sharingToken});
         } else if (pending) {
-            this.closeMenu();
-            AppActions.setCurrent(this.props.ctx, {
-                url : this.props.current.url,
-                target: this.props.current.target,
-                pending: pending
-            });
+            if (this.props.sharingToken) {
+                this.closeMenu();
+                AppActions.shareToken(this.props.ctx, pending,
+                                      this.props.current.target);
+            } else {
+                this.closeMenu();
+                AppActions.setCurrent(this.props.ctx, {
+                    url : this.props.current.url,
+                    target: this.props.current.target,
+                    pending: pending
+                });
+            }
         } else {
             console.log('Ignoring ' + selectedKey + ' target:' + pending);
         }
@@ -114,20 +82,71 @@ class MenuBurger extends  React.Component  {
         this.handleSelect(UNREGISTER_KEY);
     }
 
+    shareToken(event) {
+        event.preventDefault();
+        this.handleSelect(SHARE_KEY);
+    }
+
     switchApp(event) {
         event.preventDefault();
         this.handleSelect(DROPDOWN_KEY, event.target.id);
     }
 
     stateChange(state) {
+        AppActions.setLocalState(this.props.ctx, {sharingToken: false});
         this.setState({menuOpen: state.isOpen});
     }
 
     closeMenu () {
-        this.setState({menuOpen: false});
+        this.stateChange({isOpen: false});
     }
 
     render() {
+
+        const styles = {
+            bmBurgerButton: {
+                position: 'fixed',
+                width: '36px',
+                height: '30px',
+                left: '36px',
+                top: '30px'
+            },
+            bmBurgerBars: {
+                //        background: '#373a47',
+                background: '#8B0000',
+                opacity: '0.5'
+            },
+            bmCrossButton: {
+                height: '24px',
+                width: '24px'
+            },
+            bmCross: {
+                background: '#bdc3c7'
+            },
+            bmMenu: {
+                background: '#373a47',
+                padding: '1.5em 1.0em 0',
+                fontSize: '1.10em'
+            },
+            bmMorphShape: {
+                fill: '#373a47'
+            },
+            bmItemList: {
+                color: '#b8b7ad',
+                padding: '0.8em',
+                'overflowY': 'auto'
+            },
+            bmItem: {
+                display: 'block',
+                margin: '10px'
+            },
+            bmOverlay: {
+                background: this.props.sharingToken ?
+                    'rgba(255, 0, 0, 0.3)' :
+                    'rgba(0, 0, 0, 0.3)'
+            }
+        };
+
         //        var navBrand = 'root-launcher';
         let navBrand = '#';
         if (this.props.login) {
@@ -179,6 +198,15 @@ class MenuBurger extends  React.Component  {
                       },  cE('span', {
                           className: 'glyphicon glyphicon-pencil text-danger'
                       }), cE('span', null, ' Unregister App')),
+
+                       cE('a', {
+                          className:  'menu-share-item',
+                          key: 1881824,
+                          onClick: this.shareToken
+                      },  cE('span', {
+                          className: 'glyphicon glyphicon-arrow-down ' +
+                              'text-danger'
+                      }), cE('span', null, ' Share Token')),
 
                       cE('hr', {key: 43434})
                   ].concat(

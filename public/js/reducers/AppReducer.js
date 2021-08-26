@@ -26,7 +26,8 @@ var AppReducer = function(state, action) {
             register: false,
             unregister: false,
             enableWarnLowUnits: true,
-            disableCache: false
+            disableCache: false,
+            sharingToken: false
         };
     } else {
         switch(action.type) {

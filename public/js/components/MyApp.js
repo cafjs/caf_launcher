@@ -114,7 +114,8 @@ class MyApp extends React.Component {
                       ctx: this.props.ctx,
                       current: this.state.current,
                       login: this.state.login,
-                      apps: this.state.apps
+                      apps: this.state.apps,
+                      sharingToken: this.state.sharingToken
                   }),
                   cE(Iframe, {
                       ctx: this.props.ctx,

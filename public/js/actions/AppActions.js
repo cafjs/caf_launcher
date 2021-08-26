@@ -117,7 +117,7 @@ var AppActions = {
 };
 
 ['addApp', 'removeApp', 'registerApp', 'getDaysPerUnit', 'unregisterApp',
- 'setMegaToken', 'setCacheKey', 'refreshTokens',
+ 'setMegaToken', 'setCacheKey', 'refreshTokens', 'shareToken',
  'getAppCost'].forEach(function(x) {
      AppActions[x] = async function() {
          try {
