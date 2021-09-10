@@ -69,6 +69,7 @@ class Iframe extends React.Component {
     render() {
         return cE('iframe', {
             id: 'page-wrap',
+            allow: 'camera; microphone',
             // disable top-navigation
             sandbox:'allow-same-origin allow-popups allow-scripts allow-forms allow-pointer-lock allow-modals',
             className: 'iframe-fit',
