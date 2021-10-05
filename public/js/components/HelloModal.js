@@ -5,6 +5,7 @@ const AppActions = require('../actions/AppActions');
 const AppSession = require('../session/AppSession');
 const NOBODY_USER = 'nobody';
 const NOBODY_CA = 'unknown';
+const DESKTOPS = ['desktop1', 'desktop2', 'desktop3', 'desktop4'];
 
 class HelloModal extends React.Component {
 
@@ -16,7 +17,7 @@ class HelloModal extends React.Component {
             caOwner: ''
         };
         this.handleCAOwner = this.handleCAOwner.bind(this);
-        this.handleLocalName = this.handleLocalName.bind(this);
+        this.onSelect = this.onSelect.bind(this);
         this.doLogin = this.doLogin.bind(this);
         this.doLoginCommon = this.doLoginCommon.bind(this);
         this.doNewAccount = this.doNewAccount.bind(this);
@@ -40,8 +41,8 @@ class HelloModal extends React.Component {
         this.setState({caOwner: ev.target.value});
     }
 
-    handleLocalName(ev) {
-        this.setState({caLocalName: ev.target.value});
+    onSelect(caLocalName) {
+        this.setState({caLocalName});
     }
 
     handleModal(isOpen) {
@@ -117,10 +118,10 @@ class HelloModal extends React.Component {
                   cE(rB.Modal.Body, null,
                      cE(rB.Form, {horizontal: true},
                         cE(rB.FormGroup, {controlId: 'usernameId'},
-                           cE(rB.Col, {sm: 6, xs: 12},
+                           cE(rB.Col, {sm: 5, xs: 12},
                               cE(rB.ControlLabel, null, 'Username')
                              ),
-                           cE(rB.Col, {sm: 6, xs: 12},
+                           cE(rB.Col, {sm: 4, xs: 12},
                               cE(rB.FormControl, {
                                   type: 'text',
                                   value: this.state.caOwner,
@@ -132,23 +133,35 @@ class HelloModal extends React.Component {
                              )
                           ),
                         cE(rB.FormGroup, {controlId: 'desktopId'},
-                           cE(rB.Col, {sm: 6, xs: 12},
+                           cE(rB.Col, {sm: 5, xs: 12},
                               cE(rB.ControlLabel, null, 'Desktop')
                              ),
-                           cE(rB.Col, {sm: 6, xs: 12},
+                           cE(rB.Col, {sm: 4, xs: 8},
                               cE(rB.FormControl, {
                                   type: 'text',
+                                  readOnly: true,
                                   value: this.state.caLocalName,
-                                  onChange: this.handleLocalName,
                                   onKeyPress: this.keyDown
                               })
+                             ),
+                           cE(rB.Col, {sm: 2, xs: 4},
+                              cE(rB.DropdownButton, {
+                                  onSelect: this.onSelect,
+                                  id: 'selectId',
+                                  title: 'Change'
+                              }, DESKTOPS.map((x, i) => cE(rB.MenuItem, {
+                                  key: i*23131,
+                                  eventKey: x,
+                                  target: x
+                              }, x))
+                                )
                              )
                           ),
                         cE(rB.FormGroup, {controlId: 'keepTokenId'},
-                           cE(rB.Col, {sm: 3, xs: 4},
+                           cE(rB.Col, {sm: 3, xs: 12},
                               cE(rB.ControlLabel, null, 'Keep Token')
                              ),
-                           cE(rB.Col, {sm: 1, xs: 2},
+                           cE(rB.Col, {sm: 2, xs: 4},
                               cE(rB.Checkbox, {
                                   checked: this.props.keepToken,
                                   onChange: this.handleKeepToken
@@ -158,14 +171,18 @@ class HelloModal extends React.Component {
                        )
                     ),
                   cE(rB.Modal.Footer, null,
-                      cE(rB.Button, {
-                         bsStyle: 'link',
-                         onClick: this.doForgot
-                      }, 'Forgot username?'),
-                     cE(rB.Button, {onClick: this.doLogin},
-                        'Login'),
-                     cE(rB.Button, {onClick: this.doNewAccount},
-                        'Sign Up')
+                     cE(rB.ButtonGroup, null,
+                        cE(rB.Button, {
+                            bsStyle: 'link',
+                            onClick: this.doForgot
+                        }, 'Forgot username?'),
+                        cE(rB.Button, {
+                            onClick: this.doNewAccount
+                        }, 'Sign Up'),
+                        cE(rB.Button, {bsStyle: 'primary',
+                                       onClick: this.doLogin},
+                           'Login')
+                       )
                     )
                  );
     }
