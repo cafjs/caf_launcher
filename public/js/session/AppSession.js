@@ -1,12 +1,15 @@
-var cli = require('caf_cli');
-var AppActions = require('../actions/AppActions');
+'use strict';
+
+const cli = require('caf_cli');
+const AppActions = require('../actions/AppActions');
 
 exports.connect = function(ctx, caOwner, caLocalName, isNewAccount, keepToken) {
     return new Promise((resolve, reject) => {
         window.location.href = cli.patchURL(window.location.href, {
             caOwner: caOwner,
             caLocalName: caLocalName,
-            keepToken: keepToken
+            keepToken: keepToken,
+            session: `user${cli.randomString(8)}`
         });
         var options = { unrestrictedToken: true, token: ctx.token };
         if (isNewAccount) {
@@ -24,7 +27,6 @@ exports.connect = function(ctx, caOwner, caLocalName, isNewAccount, keepToken) {
         };
 
         session.onmessage = function(msg) {
-            console.log('message:' + JSON.stringify(msg));
             AppActions.message(ctx, msg);
         };
 

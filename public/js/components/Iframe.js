@@ -38,6 +38,7 @@ class Iframe extends React.Component {
                 caOwner: ca[0],
                 caLocalName: ca[1],
                 token: this.props.apps[this.props.current.pending],
+                session: 'default',
                 cacheKey: cacheKey
             };
 

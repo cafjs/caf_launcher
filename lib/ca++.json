@@ -5,6 +5,13 @@
     },
     "components" : [
         {
+            "name": "session",
+             "env" : {
+                 "maxSessions" :"process.env.MAX_SESSIONS||5",
+                 "maxMessages" : "process.env.MAX_MESSAGES||1"
+             }
+        },
+        {
             "name": "handler",
             "components" : [
                 {
