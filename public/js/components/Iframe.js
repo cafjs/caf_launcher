@@ -72,7 +72,7 @@ class Iframe extends React.Component {
             id: 'page-wrap',
             allow: 'camera; microphone',
             // disable top-navigation
-            sandbox:'allow-same-origin allow-popups allow-scripts allow-forms allow-pointer-lock allow-modals',
+            sandbox:'allow-same-origin allow-popups allow-scripts allow-forms allow-pointer-lock allow-modals allow-downloads',
             className: 'iframe-fit',
             frameBorder: 0,
             src: this.props.current.url
